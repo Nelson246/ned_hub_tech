@@ -373,59 +373,38 @@ app.use(
     )
 );
 
-// ========================================
-// ADMIN PAGE AUTHENTICATION
-// ========================================
-
-
-function requireAdminPage(req, res, next) {
-
-    // Allow the login page without authentication
-    if (req.path === "/login.html") {
-        return next();
-    }
-
-    // Check admin session
-    if (!req.session.admin) {
-        return res.redirect("/admin/login.html");
-    }
-
-    next();
-}
-
 
 // ========================================
-// ADMIN PAGE AUTHENTICATION
+// ADMIN STATIC FILES
 // ========================================
 
-function requireAdminPage(req, res, next) {
-
-    // Login page is accessible without login
-    if (req.path === "/login.html") {
-        return next();
-    }
-
-    // Everything else requires admin login
-    if (!req.session.admin) {
-        return res.redirect("/admin/login.html");
-    }
-
-    next();
-}
-
+// Allow admin CSS, JavaScript, images and other static assets
+// to load without requiring an admin session.
 app.use(
     "/admin",
-    requireAdminPage,
     express.static(path.join(__dirname, "admin"))
 );
 
 
-app.use(
-    "/uploads",
-    express.static(
-        path.join(__dirname, "uploads")
-    )
-);
+// ========================================
+// ADMIN PAGE AUTHENTICATION
+// ========================================
+
+function requireAdminPage(req, res, next) {
+
+    // Login page is accessible without authentication
+    if (req.path === "/login.html") {
+        return next();
+    }
+
+    // Require admin session for protected admin pages
+    if (!req.session.admin) {
+        return res.redirect("/admin/login.html");
+    }
+
+    next();
+}
+
 
 
 /* =========================================
