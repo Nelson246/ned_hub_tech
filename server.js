@@ -145,12 +145,15 @@ const db = mysql.createPool({
 
     queueLimit: 0,
 
-    ssl: {
-        rejectUnauthorized: false
-    }
-
+    ...(process.env.DB_SSL === "true"
+        ? {
+            ssl: {
+                rejectUnauthorized: false
+            }
+        }
+        : {})
 });
-
+ 
 
 /* =========================================
    TEST DATABASE
@@ -231,63 +234,85 @@ createCustomerCareTable();
 
 
 /* =========================================
-   GMAIL SMTP
+   RESEND EMAIL
 ========================================= */
 
-const transporter =
-    nodemailer.createTransport({
+const { Resend } = require("resend");
 
-        host: "smtp.gmail.com",
+const resend = new Resend(
+    process.env.RESEND_API_KEY
+);
 
-        port: 465,
-
-        secure: true,
-
-        auth: {
-
-            user: process.env.EMAIL_USER,
-
-            pass: process.env.EMAIL_PASSWORD
-
-        },
-
-        connectionTimeout: 30000,
-
-        greetingTimeout: 30000,
-
-        socketTimeout: 30000
-
-    });
 
 /* =========================================
-   TEST SMTP
+   SEND EMAIL HELPER
 ========================================= */
 
-transporter.verify()
+async function sendEmail({
+    to,
+    subject,
+    html,
+    text
+}) {
 
-    .then(() => {
+    try {
 
-        console.log("---------------------------------");
+        const result =
+            await resend.emails.send({
+
+                from:
+                    process.env.EMAIL_FROM ||
+                    "onboarding@resend.dev",
+
+                to: Array.isArray(to)
+                    ? to
+                    : [to],
+
+                subject: subject,
+
+                html: html,
+
+                ...(text
+                    ? { text: text }
+                    : {})
+
+            });
+
+
+        if (result.error) {
+
+            console.error(
+                "Resend email FAILED:",
+                result.error
+            );
+
+            throw new Error(
+                result.error.message ||
+                "Resend email failed"
+            );
+        }
+
+
         console.log(
-            "Gmail SMTP connection successful."
+            "Email sent successfully:",
+            result.data?.id
         );
-        console.log("---------------------------------");
 
-    })
 
-    .catch((error) => {
+        return result.data;
 
-        console.error("---------------------------------");
+    } catch (error) {
+
         console.error(
-            "Gmail SMTP connection FAILED."
-        );
-        console.error(
-            "Message:",
+            "Resend email ERROR:",
             error.message
         );
-        console.error("---------------------------------");
 
-    });
+        throw error;
+    }
+}
+
+
 
 
 /* =========================================
@@ -487,10 +512,8 @@ app.get(
         try {
 
             const info =
-                await transporter.sendMail({
-
-                    from:
-                        `"NED HUB" <${process.env.EMAIL_USER}>`,
+                await sendEmail({
+                    
 
                     to:
                         process.env.EMAIL_USER,
@@ -668,11 +691,9 @@ app.post(
 
             );
 
-            await transporter.sendMail({
+            await sendEmail({
 
-                from:
-                    `"NED HUB" <${process.env.EMAIL_USER}>`,
-
+                
                 to:
                     email.trim(),
 
@@ -1195,8 +1216,8 @@ app.post("/api/forgot-password", async (req, res) => {
         const resetLink =
     `http://127.0.0.1:3000/reset-password.html?token=${resetToken}`;
 
-        await transporter.sendMail({
-            from: `"NED HUB" <${process.env.EMAIL_USER}>`,
+        await sendEmail({
+
             to: customer.email,
             subject: "NED HUB - Password Reset",
             html: `
@@ -1699,10 +1720,8 @@ app.post(
 
             );
 
-            await transporter.sendMail({
+            await sendEmail({
 
-                from:
-                    `"NED HUB" <${process.env.EMAIL_USER}>`,
 
                 to:
                     customer.email,
