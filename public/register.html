@@ -277,17 +277,12 @@
 
            if (data.success) {
 
-             alert(data.message);
+    alert(data.message);
 
-            window.location.href =
-                   "/verify.html";
-            
-                   message.textContent =
-                    "Account created successfully!";
+    window.location.href =
+        "/login.html";
 
-                form.reset();
-
-            } else {
+} else {
 
                 message.classList.add("error");
                 message.textContent = data.message;

@@ -387,6 +387,21 @@ app.use(
 
 
 // ========================================
+// UPLOADED IMAGES
+// ========================================
+
+app.use(
+    "/uploads",
+    express.static(
+        path.join(__dirname, "uploads")
+    )
+);
+
+console.log("SERVER DIRECTORY:", __dirname);
+console.log("UPLOADS DIRECTORY:", path.join(__dirname, "uploads"));
+
+
+// ========================================
 // ADMIN PAGE AUTHENTICATION
 // ========================================
 
@@ -616,157 +631,49 @@ app.post(
 
             }
 
-            const verificationCode =
-                Math.floor(
-                    100000 +
-                    Math.random() * 900000
-                ).toString();
-
-            const verificationExpires =
-                new Date(
-                    Date.now() +
-                    10 * 60 * 1000
-                );
 
             const hashedPassword =
-                await bcrypt.hash(
-                    password,
-                    10
-                );
+    await bcrypt.hash(
+        password,
+        10
+    );
 
-            const [
-                result
-            ] = await db.query(
+const [
+    result
+] = await db.query(
 
-                `INSERT INTO customers
-                (
-                    name,
-                    email,
-                    phone,
-                    password,
-                    email_verified,
-                    verification_code,
-                    verification_expires
-                )
-                VALUES (?, ?, ?, ?, FALSE, ?, ?)`,
+    `INSERT INTO customers
+    (
+        name,
+        email,
+        phone,
+        password,
+        email_verified
+    )
+    VALUES (?, ?, ?, ?, TRUE)`,
 
-                [
+    [
+        name.trim(),
+        email.trim(),
+        phone
+            ? phone.trim()
+            : null,
+        hashedPassword
+    ]
 
-                    name.trim(),
+);
 
-                    email.trim(),
+res.status(201).json({
 
-                    phone
-                        ? phone.trim()
-                        : null,
+    success: true,
 
-                    hashedPassword,
+    message:
+        "Account created successfully. You can now log in.",
 
-                    verificationCode,
+    customerId:
+        result.insertId
 
-                    verificationExpires
-
-                ]
-
-            );
-
-            await sendEmail({
-
-                
-                to:
-                    email.trim(),
-
-                subject:
-                    "Verify your NED HUB account",
-
-                html: `
-
-                    <div style="
-                        font-family:Arial,sans-serif;
-                        max-width:600px;
-                        margin:auto;
-                        padding:30px;
-                    ">
-
-                        <h1 style="color:#1479ff;">
-                            NED HUB
-                        </h1>
-
-                        <h2>
-                            Verify your email address
-                        </h2>
-
-                        <p>
-                            Hello
-                            <strong>${name}</strong>,
-                        </p>
-
-                        <p>
-                            Thank you for creating
-                            your NED HUB account.
-                        </p>
-
-                        <p>
-                            Your verification code is:
-                        </p>
-
-                        <div style="
-                            background:#f1f5f9;
-                            padding:20px;
-                            text-align:center;
-                            border-radius:8px;
-                            margin:25px 0;
-                        ">
-
-                            <span style="
-                                font-size:32px;
-                                font-weight:bold;
-                                letter-spacing:8px;
-                                color:#1479ff;
-                            ">
-                                ${verificationCode}
-                            </span>
-
-                        </div>
-
-                        <p>
-                            This code expires in
-                            <strong>10 minutes</strong>.
-                        </p>
-
-                        <p>
-                            If you did not create
-                            this account, ignore this email.
-                        </p>
-
-                        <hr>
-
-                        <p style="
-                            color:#777;
-                            font-size:12px;
-                        ">
-                            © ${new Date().getFullYear()}
-                            NED HUB.
-                            All rights reserved.
-                        </p>
-
-                    </div>
-
-                `
-
-            });
-
-            res.status(201).json({
-
-                success: true,
-
-                message:
-                    "Account created. A verification code has been sent to your email.",
-
-                customerId:
-                    result.insertId
-
-            });
+});
 
         } catch (error) {
 
@@ -780,13 +687,14 @@ app.post(
                 success: false,
 
                 message:
-                    "Account was created, but we could not send the verification email. Please try again."
+                    "Registration failed. Please try again."
 
             });
 
         }
 
     }
+
 );
 
 
