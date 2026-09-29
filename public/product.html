@@ -1,16 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NED HUB - Product</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Product</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet"
+>
 
 <style>
+
 :root {
     --primary: #0080ff;
     --secondary: #00aaff;
@@ -41,7 +57,11 @@ a {
     color: inherit;
 }
 
-/* HEADER */
+
+/* ================================
+   HEADER
+================================ */
+
 header {
     background: var(--header-color, var(--primary));
     color: white;
@@ -123,7 +143,11 @@ header {
     font-weight: 700;
 }
 
-/* BREADCRUMB */
+
+/* ================================
+   BREADCRUMB
+================================ */
+
 .breadcrumb {
     padding: 18px 5%;
     color: var(--gray);
@@ -135,7 +159,11 @@ header {
     font-weight: 600;
 }
 
-/* LOADING */
+
+/* ================================
+   LOADING
+================================ */
+
 .loading {
     min-height: 500px;
     display: flex;
@@ -161,7 +189,11 @@ header {
     }
 }
 
-/* PRODUCT */
+
+/* ================================
+   PRODUCT
+================================ */
+
 .product-container {
     width: 90%;
     max-width: 1200px;
@@ -178,7 +210,11 @@ header {
     gap: 45px;
 }
 
-/* IMAGE AREA */
+
+/* ================================
+   IMAGE AREA
+================================ */
+
 .image-section {
     width: 100%;
 }
@@ -276,7 +312,11 @@ header {
     border-color: var(--primary);
 }
 
-/* PRODUCT INFO */
+
+/* ================================
+   PRODUCT INFO
+================================ */
+
 .product-info {
     display: flex;
     flex-direction: column;
@@ -337,7 +377,11 @@ header {
     white-space: pre-line;
 }
 
-/* QUANTITY */
+
+/* ================================
+   QUANTITY
+================================ */
+
 .quantity-title {
     font-weight: 700;
     margin-bottom: 10px;
@@ -381,7 +425,11 @@ header {
     font-size: 16px;
 }
 
-/* BUTTONS */
+
+/* ================================
+   BUTTONS
+================================ */
+
 .action-buttons {
     display: flex;
     gap: 12px;
@@ -421,7 +469,11 @@ header {
     transform: none;
 }
 
-/* MESSAGE */
+
+/* ================================
+   MESSAGE
+================================ */
+
 .message {
     margin-top: 18px;
     padding: 12px 15px;
@@ -442,7 +494,11 @@ header {
     color: var(--danger);
 }
 
-/* ERROR */
+
+/* ================================
+   ERROR
+================================ */
+
 .error-container {
     width: 90%;
     max-width: 600px;
@@ -472,7 +528,11 @@ header {
     font-weight: 700;
 }
 
-/* FOOTER */
+
+/* ================================
+   FOOTER
+================================ */
+
 footer {
     background: var(--dark);
     color: white;
@@ -490,8 +550,13 @@ footer p {
     color: #d1d5db;
 }
 
-/* MOBILE */
+
+/* ================================
+   MOBILE
+================================ */
+
 @media (max-width: 850px) {
+
     header {
         flex-wrap: wrap;
     }
@@ -514,9 +579,11 @@ footer p {
     .product-name {
         font-size: 30px;
     }
+
 }
 
 @media (max-width: 500px) {
+
     .header-actions {
         gap: 8px;
         font-size: 13px;
@@ -541,58 +608,130 @@ footer p {
     .action-btn {
         min-width: 100%;
     }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
+
 <header>
-    <a href="/" class="logo">NED HUB</a>
+
+    <a
+        href="/"
+        class="logo"
+        data-store-name
+    >
+        NED HUB
+    </a>
+
 
     <div class="search-box">
+
         <form id="searchForm">
+
             <input
                 type="search"
                 id="searchInput"
                 placeholder="Search products..."
             >
-            <button type="submit">Search</button>
+
+            <button type="submit">
+                Search
+            </button>
+
         </form>
+
     </div>
 
-    <div class="header-actions">
-        <a href="/login.html">Login</a>
-        <a href="/register.html">Register</a>
 
-        <a href="/checkout.html" class="cart-link">
-            🛒 Cart
-            <span id="cartCount" class="cart-count">0</span>
+    <div
+        class="header-actions"
+        id="headerActions"
+    >
+
+
+        <a
+            href="/account.html"
+            id="accountLink"
+            style="display:none;"
+        >
+            My Account
         </a>
+
+
+        <a
+            href="#"
+            id="logoutLink"
+            style="display:none;"
+        >
+            Logout
+        </a>
+
+
+        <a
+            href="/checkout.html"
+            class="cart-link"
+        >
+            🛒 Cart
+
+            <span
+                id="cartCount"
+                class="cart-count"
+            >
+                0
+            </span>
+
+        </a>
+
     </div>
+
 </header>
 
+
 <div class="breadcrumb">
-    <a href="/">Home</a>
-    <span> / </span>
-    <span id="breadcrumbProduct">Product</span>
+
+    <a href="/">
+        Home
+    </a>
+
+    <span>
+        /
+    </span>
+
+    <span id="breadcrumbProduct">
+        Product
+    </span>
+
 </div>
 
-<div id="loading" class="loading">
+
+<div
+    id="loading"
+    class="loading"
+>
+
     <div class="spinner"></div>
+
     Loading product...
+
 </div>
 
-<div id="productContainer" class="product-container" style="display:none;">
 
-    <!-- IMPORTANT:
-         NO onclick on this card.
-         This prevents +, -, thumbnails and arrows
-         from accidentally opening an invalid product URL.
-    -->
+<div
+    id="productContainer"
+    class="product-container"
+    style="display:none;"
+>
+
     <div class="product-card">
 
+
         <!-- IMAGE SECTION -->
+
         <div class="image-section">
 
             <div class="main-image-wrapper">
@@ -604,6 +743,7 @@ footer p {
                     style="display:none;"
                 >
 
+
                 <div
                     id="imagePlaceholder"
                     class="image-placeholder"
@@ -611,6 +751,7 @@ footer p {
                 >
                     No product image available
                 </div>
+
 
                 <button
                     id="previousImage"
@@ -622,6 +763,7 @@ footer p {
                     ‹
                 </button>
 
+
                 <button
                     id="nextImage"
                     class="image-arrow right"
@@ -631,6 +773,7 @@ footer p {
                 >
                     ›
                 </button>
+
 
                 <div
                     id="imageCounter"
@@ -642,6 +785,7 @@ footer p {
 
             </div>
 
+
             <div
                 id="thumbnailContainer"
                 class="thumbnail-container"
@@ -649,7 +793,9 @@ footer p {
 
         </div>
 
+
         <!-- PRODUCT INFO -->
+
         <div class="product-info">
 
             <div
@@ -659,6 +805,7 @@ footer p {
                 Category
             </div>
 
+
             <h1
                 id="productName"
                 class="product-name"
@@ -666,10 +813,12 @@ footer p {
                 Product
             </h1>
 
+
             <div
                 id="productSku"
                 class="product-sku"
             ></div>
+
 
             <div
                 id="productPrice"
@@ -678,6 +827,7 @@ footer p {
                 0.00
             </div>
 
+
             <div
                 id="stockBadge"
                 class="stock-badge"
@@ -685,14 +835,17 @@ footer p {
                 Checking stock...
             </div>
 
+
             <div
                 id="productDescription"
                 class="product-description"
             ></div>
 
+
             <div class="quantity-title">
                 Quantity
             </div>
+
 
             <div class="quantity-controls">
 
@@ -703,6 +856,7 @@ footer p {
                     −
                 </button>
 
+
                 <input
                     type="number"
                     id="quantity"
@@ -710,6 +864,7 @@ footer p {
                     min="1"
                     onchange="validateQuantity();"
                 >
+
 
                 <button
                     type="button"
@@ -720,29 +875,30 @@ footer p {
 
             </div>
 
+
             <div class="action-buttons">
 
-    <button
-        id="addToCartBtn"
-        class="action-btn add-cart"
-        type="button"
-        onclick="addToCart(false)"
-    >
-        Add to Cart
-    </button>
+                <button
+                    id="addToCartBtn"
+                    class="action-btn add-cart"
+                    type="button"
+                    onclick="addToCart(false)"
+                >
+                    Add to Cart
+                </button>
 
-    <button
-        id="buyNowBtn"
-        class="action-btn buy-now"
-        type="button"
-        onclick="buyNow()"
-    >
-        Buy Now
-    </button>
 
-</div>
+                <button
+                    id="buyNowBtn"
+                    class="action-btn buy-now"
+                    type="button"
+                    onclick="buyNow()"
+                >
+                    Buy Now
+                </button>
 
             </div>
+
 
             <div
                 id="message"
@@ -752,38 +908,65 @@ footer p {
         </div>
 
     </div>
+
 </div>
+
 
 <div
     id="errorContainer"
     class="error-container"
     style="display:none;"
 >
-    <h2>Product Not Found</h2>
+
+    <h2>
+        Product Not Found
+    </h2>
+
 
     <p id="errorMessage">
         The product you are looking for could not be found.
     </p>
 
-    <a href="/" class="back-btn">
+
+    <a
+        href="/"
+        class="back-btn"
+    >
         Back to Shop
     </a>
+
 </div>
 
+
 <footer>
-    <h3>NED HUB</h3>
-    <p>Your trusted online shopping destination.</p>
+
+    <h3 data-store-name>
+        NED HUB
+    </h3>
+
+    <p data-store-tagline>
+        Your trusted online shopping destination.
+    </p>
+
 </footer>
+
 
 <script>
 
 const API = "/api";
 
-const params = new URLSearchParams(window.location.search);
-const productId = params.get("id");
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const productId =
+    params.get("id");
 
 let product = null;
+
 let productPhotos = [];
+
 let currentPhotoIndex = 0;
 
 
@@ -792,66 +975,78 @@ let currentPhotoIndex = 0;
 ================================ */
 
 function getCart() {
+
     try {
+
         return JSON.parse(
-            localStorage.getItem("nedHubCart")
+            localStorage.getItem(
+                "nedHubCart"
+            )
         ) || [];
+
     } catch (error) {
+
         return [];
+
     }
+
 }
 
+
 function saveCart(cart) {
+
     localStorage.setItem(
         "nedHubCart",
         JSON.stringify(cart)
     );
+
 }
 
-function updateCartCount() {
-
-    const cart = getCart();
-
-    const count = cart.reduce(
-        (total, item) =>
-            total + Number(item.quantity || 0),
-        0
-    );
-
-    const cartCount =
-        document.getElementById("cartCount");
-
-    if (cartCount) {
-        cartCount.textContent = count;
-    }
-}
 
 function updateCartCount() {
 
     let cart = [];
 
     try {
+
         cart =
             JSON.parse(
-                localStorage.getItem("nedHubCart")
+                localStorage.getItem(
+                    "nedHubCart"
+                )
             ) || [];
+
     } catch (error) {
+
         cart = [];
+
     }
+
 
     const count =
         cart.reduce(
             (total, item) =>
-                total + Number(item.quantity || 0),
+                total +
+                Number(
+                    item.quantity || 0
+                ),
             0
         );
 
+
     const cartCount =
-        document.getElementById("cartCount");
+        document.getElementById(
+            "cartCount"
+        );
+
 
     if (cartCount) {
-        cartCount.textContent = count;
+
+        cartCount.textContent =
+            count;
+
     }
+
 }
 
 
@@ -862,48 +1057,78 @@ function updateCartCount() {
 async function loadProduct() {
 
     if (!productId) {
-        showProductError("Invalid product ID.");
+
+        showProductError(
+            "Invalid product ID."
+        );
+
         return;
+
     }
+
 
     try {
 
         const response =
-            await fetch(`${API}/products`);
+            await fetch(
+                `${API}/products`
+            );
+
 
         if (!response.ok) {
-            throw new Error("Failed to load products.");
+
+            throw new Error(
+                "Failed to load products."
+            );
+
         }
 
-        const data = await response.json();
+
+        const data =
+            await response.json();
+
 
         const products =
             Array.isArray(data)
                 ? data
                 : data.products || [];
 
-        product = products.find(
-            item =>
-                String(item.id) ===
-                String(productId)
-        );
+
+        product =
+            products.find(
+                item =>
+                    String(item.id) ===
+                    String(productId)
+            );
+
 
         if (!product) {
+
             showProductError(
                 "The product you are looking for does not exist."
             );
+
             return;
+
         }
+
 
         renderProduct(product);
 
         await loadProductPhotos();
 
-        document.getElementById("loading")
-            .style.display = "none";
 
-        document.getElementById("productContainer")
-            .style.display = "block";
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "productContainer"
+        ).style.display =
+            "block";
+
 
     } catch (error) {
 
@@ -912,10 +1137,13 @@ async function loadProduct() {
             error
         );
 
+
         showProductError(
             "Unable to load this product. Please try again."
         );
+
     }
+
 }
 
 
@@ -925,18 +1153,38 @@ async function loadProduct() {
 
 function renderProduct(item) {
 
+    /*
+       Get the current shop name.
+       site-settings.js will also update
+       the page title when settings load.
+    */
+
+    const settings =
+        window.NED_HUB_SETTINGS || {};
+
+    const shopName =
+        settings.store_name ||
+        settings.header_store_name ||
+        "NED HUB";
+
+
     document.title =
-        `${item.name || "Product"} | NED HUB`;
+        `${item.name || "Product"} | ${shopName}`;
+
 
     document.getElementById(
         "breadcrumbProduct"
     ).textContent =
-        item.name || "Product";
+        item.name ||
+        "Product";
+
 
     document.getElementById(
         "productName"
     ).textContent =
-        item.name || "Unnamed Product";
+        item.name ||
+        "Unnamed Product";
+
 
     document.getElementById(
         "productCategory"
@@ -945,16 +1193,21 @@ function renderProduct(item) {
         item.category ||
         "Product";
 
+
     document.getElementById(
         "productPrice"
     ).textContent =
-        formatPrice(item.price);
+        formatPrice(
+            item.price
+        );
+
 
     document.getElementById(
         "productDescription"
     ).textContent =
         item.description ||
         "No description available.";
+
 
     document.getElementById(
         "productSku"
@@ -963,15 +1216,25 @@ function renderProduct(item) {
             ? `SKU: ${item.sku}`
             : "";
 
+
     const quantity =
-        document.getElementById("quantity");
+        document.getElementById(
+            "quantity"
+        );
+
 
     const stock =
-        Number(item.stock || 0);
+        Number(
+            item.stock || 0
+        );
 
-    quantity.max = stock;
+
+    quantity.max =
+        stock;
+
 
     updateStockDisplay();
+
 }
 
 
@@ -982,9 +1245,13 @@ function renderProduct(item) {
 function formatPrice(price) {
 
     const number =
-        Number(price || 0);
+        Number(
+            price || 0
+        );
+
 
     return `GH₵ ${number.toFixed(2)}`;
+
 }
 
 
@@ -994,42 +1261,72 @@ function formatPrice(price) {
 
 function updateStockDisplay() {
 
-    if (!product) return;
+    if (!product) {
+        return;
+    }
+
 
     const stock =
-        Number(product.stock || 0);
+        Number(
+            product.stock || 0
+        );
+
 
     const badge =
-        document.getElementById("stockBadge");
+        document.getElementById(
+            "stockBadge"
+        );
+
 
     const addButton =
-        document.getElementById("addToCartBtn");
+        document.getElementById(
+            "addToCartBtn"
+        );
+
 
     const buyButton =
-        document.getElementById("buyNowBtn");
+        document.getElementById(
+            "buyNowBtn"
+        );
+
 
     if (stock > 0) {
 
         badge.textContent =
             `${stock} item${stock === 1 ? "" : "s"} available`;
 
+
         badge.className =
             "stock-badge in-stock";
 
-        addButton.disabled = false;
-        buyButton.disabled = false;
+
+        addButton.disabled =
+            false;
+
+
+        buyButton.disabled =
+            false;
+
 
     } else {
 
         badge.textContent =
             "Out of stock";
 
+
         badge.className =
             "stock-badge out-stock";
 
-        addButton.disabled = true;
-        buyButton.disabled = true;
+
+        addButton.disabled =
+            true;
+
+
+        buyButton.disabled =
+            true;
+
     }
+
 }
 
 
@@ -1040,26 +1337,30 @@ function updateStockDisplay() {
 async function loadProductPhotos() {
 
     productPhotos = [];
+
     currentPhotoIndex = 0;
+
 
     /*
        Main product image
     */
-    if (product && product.main_image) {
+
+    if (
+        product &&
+        product.main_image
+    ) {
 
         productPhotos.push(
             product.main_image
         );
+
     }
 
+
     /*
-       Additional product images.
-
-       If your server supports:
-       GET /api/products/:id/images
-
-       they will be loaded here.
+       Additional product images
     */
+
     try {
 
         const response =
@@ -1067,30 +1368,44 @@ async function loadProductPhotos() {
                 `${API}/products/${productId}/images`
             );
 
+
         if (response.ok) {
 
             const data =
                 await response.json();
+
 
             const images =
                 Array.isArray(data)
                     ? data
                     : data.images || [];
 
-            images.forEach(image => {
 
-                const imageUrl =
-                    image.image_url ||
-                    image.url ||
-                    image.path;
+            images.forEach(
+                image => {
 
-                if (
-                    imageUrl &&
-                    !productPhotos.includes(imageUrl)
-                ) {
-                    productPhotos.push(imageUrl);
+                    const imageUrl =
+                        image.image_url ||
+                        image.url ||
+                        image.path;
+
+
+                    if (
+                        imageUrl &&
+                        !productPhotos.includes(
+                            imageUrl
+                        )
+                    ) {
+
+                        productPhotos.push(
+                            imageUrl
+                        );
+
+                    }
+
                 }
-            });
+            );
+
         }
 
     } catch (error) {
@@ -1099,9 +1414,12 @@ async function loadProductPhotos() {
             "Additional images unavailable:",
             error.message
         );
+
     }
 
+
     renderPhotos();
+
 }
 
 
@@ -1116,25 +1434,30 @@ function renderPhotos() {
             "mainProductImage"
         );
 
+
     const placeholder =
         document.getElementById(
             "imagePlaceholder"
         );
+
 
     const thumbnailContainer =
         document.getElementById(
             "thumbnailContainer"
         );
 
+
     const previousButton =
         document.getElementById(
             "previousImage"
         );
 
+
     const nextButton =
         document.getElementById(
             "nextImage"
         );
+
 
     const counter =
         document.getElementById(
@@ -1142,74 +1465,97 @@ function renderPhotos() {
         );
 
 
-    thumbnailContainer.innerHTML = "";
+    thumbnailContainer.innerHTML =
+        "";
 
 
     if (!productPhotos.length) {
 
-        mainImage.style.display = "none";
+        mainImage.style.display =
+            "none";
+
 
         placeholder.style.display =
             "block";
 
+
         previousButton.style.display =
             "none";
+
 
         nextButton.style.display =
             "none";
 
+
         counter.style.display =
             "none";
 
+
         return;
+
     }
 
 
     placeholder.style.display =
         "none";
 
+
     mainImage.style.display =
         "block";
 
 
     const currentPhoto =
-        productPhotos[currentPhotoIndex];
+        productPhotos[
+            currentPhotoIndex
+        ];
+
 
     mainImage.src =
         currentPhoto;
 
+
     mainImage.alt =
-        product?.name || "Product";
+        product?.name ||
+        "Product";
 
 
     /*
        Multiple images
     */
 
-    if (productPhotos.length > 1) {
+    if (
+        productPhotos.length > 1
+    ) {
 
         previousButton.style.display =
             "flex";
 
+
         nextButton.style.display =
             "flex";
+
 
         counter.style.display =
             "block";
 
+
         counter.textContent =
             `${currentPhotoIndex + 1} / ${productPhotos.length}`;
+
 
     } else {
 
         previousButton.style.display =
             "none";
 
+
         nextButton.style.display =
             "none";
 
+
         counter.style.display =
             "none";
+
     }
 
 
@@ -1218,45 +1564,65 @@ function renderPhotos() {
     */
 
     productPhotos.forEach(
-        (photo, index) => {
+        (
+            photo,
+            index
+        ) => {
 
             const img =
-                document.createElement("img");
+                document.createElement(
+                    "img"
+                );
 
-            img.src = photo;
+
+            img.src =
+                photo;
+
 
             img.alt =
                 `${product?.name || "Product"} image ${index + 1}`;
 
+
             img.className =
                 "thumbnail";
 
+
             if (
-                index === currentPhotoIndex
+                index ===
+                currentPhotoIndex
             ) {
-                img.classList.add("active");
+
+                img.classList.add(
+                    "active"
+                );
+
             }
 
-            /*
-               IMPORTANT:
-               Stop the click from bubbling.
-            */
+
             img.addEventListener(
                 "click",
                 event => {
 
                     event.stopPropagation();
 
+
                     currentPhotoIndex =
                         index;
 
+
                     renderPhotos();
+
                 }
             );
 
-            thumbnailContainer.appendChild(img);
+
+            thumbnailContainer.appendChild(
+                img
+            );
+
         }
     );
+
 }
 
 
@@ -1266,18 +1632,30 @@ function renderPhotos() {
 
 function previousPhoto() {
 
-    if (productPhotos.length <= 1) {
+    if (
+        productPhotos.length <= 1
+    ) {
+
         return;
+
     }
+
 
     currentPhotoIndex--;
 
-    if (currentPhotoIndex < 0) {
+
+    if (
+        currentPhotoIndex < 0
+    ) {
+
         currentPhotoIndex =
             productPhotos.length - 1;
+
     }
 
+
     renderPhotos();
+
 }
 
 
@@ -1287,20 +1665,31 @@ function previousPhoto() {
 
 function nextPhoto() {
 
-    if (productPhotos.length <= 1) {
+    if (
+        productPhotos.length <= 1
+    ) {
+
         return;
+
     }
 
+
     currentPhotoIndex++;
+
 
     if (
         currentPhotoIndex >=
         productPhotos.length
     ) {
-        currentPhotoIndex = 0;
+
+        currentPhotoIndex =
+            0;
+
     }
 
+
     renderPhotos();
+
 }
 
 
@@ -1310,23 +1699,39 @@ function nextPhoto() {
 
 function increaseQuantity() {
 
-    if (!product) return;
+    if (!product) {
+        return;
+    }
+
 
     const input =
-        document.getElementById("quantity");
+        document.getElementById(
+            "quantity"
+        );
+
 
     const stock =
-        Number(product.stock || 0);
+        Number(
+            product.stock || 0
+        );
+
 
     let quantity =
-        Number(input.value || 1);
+        Number(
+            input.value || 1
+        );
 
-    if (quantity < stock) {
+
+    if (
+        quantity < stock
+    ) {
 
         quantity++;
 
+
         input.value =
             quantity;
+
 
     } else {
 
@@ -1334,73 +1739,120 @@ function increaseQuantity() {
             `Only ${stock} item${stock === 1 ? "" : "s"} available.`,
             "error"
         );
+
     }
+
 }
 
 
 function decreaseQuantity() {
 
     const input =
-        document.getElementById("quantity");
+        document.getElementById(
+            "quantity"
+        );
+
 
     let quantity =
-        Number(input.value || 1);
+        Number(
+            input.value || 1
+        );
 
-    if (quantity > 1) {
+
+    if (
+        quantity > 1
+    ) {
 
         quantity--;
 
+
         input.value =
             quantity;
+
     }
+
 }
 
 
 function validateQuantity() {
 
-    if (!product) return;
+    if (!product) {
+        return;
+    }
+
 
     const input =
-        document.getElementById("quantity");
+        document.getElementById(
+            "quantity"
+        );
+
 
     const stock =
-        Number(product.stock || 0);
+        Number(
+            product.stock || 0
+        );
+
 
     let quantity =
-        parseInt(input.value, 10);
+        parseInt(
+            input.value,
+            10
+        );
+
 
     if (
         isNaN(quantity) ||
         quantity < 1
     ) {
+
         quantity = 1;
+
     }
 
-    if (quantity > stock) {
-        quantity = stock;
+
+    if (
+        quantity > stock
+    ) {
+
+        quantity =
+            stock;
+
     }
+
 
     input.value =
         quantity;
+
 }
 
 
 function getQuantity() {
 
     const input =
-        document.getElementById("quantity");
+        document.getElementById(
+            "quantity"
+        );
+
 
     let quantity =
-        parseInt(input.value, 10);
+        parseInt(
+            input.value,
+            10
+        );
+
 
     if (
         isNaN(quantity) ||
         quantity < 1
     ) {
+
         quantity = 1;
+
     }
 
+
     return quantity;
+
 }
 
 
@@ -1408,45 +1860,94 @@ function getQuantity() {
    ADD TO CART
 ================================ */
 
-function addToCart(redirectAfter = false) {
+function addToCart(
+    redirectAfter = false
+) {
 
     if (!product) {
-        alert("Product information is not loaded yet.");
+
+        alert(
+            "Product information is not loaded yet."
+        );
+
         return;
+
     }
 
-    const stock = Number(product.stock || 0);
 
-    if (stock <= 0) {
-        alert("This product is out of stock.");
+    const stock =
+        Number(
+            product.stock || 0
+        );
+
+
+    if (
+        stock <= 0
+    ) {
+
+        alert(
+            "This product is out of stock."
+        );
+
         return;
+
     }
+
 
     const quantityInput =
-        document.getElementById("quantity");
+        document.getElementById(
+            "quantity"
+        );
+
 
     let quantity =
-        parseInt(quantityInput.value, 10);
+        parseInt(
+            quantityInput.value,
+            10
+        );
 
-    if (isNaN(quantity) || quantity < 1) {
+
+    if (
+        isNaN(quantity) ||
+        quantity < 1
+    ) {
+
         quantity = 1;
+
     }
 
-    if (quantity > stock) {
-        alert(`Only ${stock} item${stock === 1 ? "" : "s"} available.`);
+
+    if (
+        quantity > stock
+    ) {
+
+        alert(
+            `Only ${stock} item${stock === 1 ? "" : "s"} available.`
+        );
+
         return;
+
     }
+
 
     let cart = [];
 
+
     try {
+
         cart =
             JSON.parse(
-                localStorage.getItem("nedHubCart")
+                localStorage.getItem(
+                    "nedHubCart"
+                )
             ) || [];
+
     } catch (error) {
+
         cart = [];
+
     }
+
 
     const existingIndex =
         cart.findIndex(
@@ -1455,58 +1956,101 @@ function addToCart(redirectAfter = false) {
                 String(product.id)
         );
 
-    if (existingIndex !== -1) {
+
+    if (
+        existingIndex !== -1
+    ) {
 
         const currentQuantity =
             Number(
-                cart[existingIndex].quantity || 0
+                cart[
+                    existingIndex
+                ].quantity || 0
             );
 
-        const newQuantity =
-            currentQuantity + quantity;
 
-        if (newQuantity > stock) {
+        const newQuantity =
+            currentQuantity +
+            quantity;
+
+
+        if (
+            newQuantity > stock
+        ) {
+
             alert(
                 `You already have ${currentQuantity} in your cart. Only ${stock} available.`
             );
+
             return;
+
         }
 
-        cart[existingIndex].quantity =
+
+        cart[
+            existingIndex
+        ].quantity =
             newQuantity;
+
 
     } else {
 
         cart.push({
-            id: product.id,
-            name: product.name,
-            price: Number(product.price || 0),
-            quantity: quantity,
-            stock: stock,
-            main_image: product.main_image || "",
+
+            id:
+                product.id,
+
+            name:
+                product.name,
+
+            price:
+                Number(
+                    product.price || 0
+                ),
+
+            quantity:
+                quantity,
+
+            stock:
+                stock,
+
+            main_image:
+                product.main_image ||
+                "",
+
             category_name:
                 product.category_name ||
                 product.category ||
                 ""
+
         });
+
     }
+
 
     localStorage.setItem(
         "nedHubCart",
         JSON.stringify(cart)
     );
 
+
     updateCartCount();
+
 
     alert(
         `${product.name} has been added to your cart.`
     );
 
-    if (redirectAfter) {
+
+    if (
+        redirectAfter
+    ) {
 
         window.location.href =
             "/checkout.html";
+
     }
+
 }
 
 
@@ -1535,15 +2079,23 @@ function showMessage(
             "message"
         );
 
+
     element.textContent =
         message;
+
 
     element.className =
         `message ${type}`;
 
+
+    element.style.display =
+        "block";
+
+
     clearTimeout(
         window.messageTimer
     );
+
 
     window.messageTimer =
         setTimeout(
@@ -1555,6 +2107,7 @@ function showMessage(
             },
             3500
         );
+
 }
 
 
@@ -1568,19 +2121,27 @@ function showProductError(
 
     document.getElementById(
         "loading"
-    ).style.display = "none";
+    ).style.display =
+        "none";
+
 
     document.getElementById(
         "productContainer"
-    ).style.display = "none";
+    ).style.display =
+        "none";
+
 
     document.getElementById(
         "errorContainer"
-    ).style.display = "block";
+    ).style.display =
+        "block";
+
 
     document.getElementById(
         "errorMessage"
-    ).textContent = message;
+    ).textContent =
+        message;
+
 }
 
 
@@ -1589,12 +2150,15 @@ function showProductError(
 ================================ */
 
 document
-    .getElementById("searchForm")
+    .getElementById(
+        "searchForm"
+    )
     .addEventListener(
         "submit",
         event => {
 
             event.preventDefault();
+
 
             const query =
                 document
@@ -1604,13 +2168,22 @@ document
                     .value
                     .trim();
 
+
             if (query) {
 
                 window.location.href =
                     `/?search=${encodeURIComponent(query)}`;
+
             }
+
         }
     );
+
+
+/* ================================
+   CHECK LOGIN STATUS
+================================ */
+
 
 
 /* ================================
@@ -1619,12 +2192,19 @@ document
 
 updateCartCount();
 
+
 loadProduct();
 
 </script>
+
+
+<!-- ==========================================
+     GLOBAL SITE SETTINGS
+========================================== -->
 
 <script src="/js/site-settings.js"></script>
 
 
 </body>
+
 </html>

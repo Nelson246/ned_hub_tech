@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Shopping Cart - NED HUB</title>
+    <title>Shopping Cart</title>
 
     <style>
         * {
@@ -295,7 +295,7 @@
 
 <header>
 
-    <div class="logo">
+    <div class="logo" data-store-name>
         NED HUB
     </div>
 
@@ -334,7 +334,7 @@
 <footer>
 
     <p>
-        &copy; 2026 NED HUB. All Rights Reserved.
+        &copy; 2026 <span data-store-name>NED HUB</span>. All Rights Reserved.
     </p>
 
 </footer>
@@ -773,6 +773,13 @@
     displayCart();
 
 </script>
+
+
+<!-- ==========================================
+     GLOBAL NED HUB SITE SETTINGS
+========================================== -->
+
+<script src="/js/site-settings.js"></script>
 
 </body>
 </html>

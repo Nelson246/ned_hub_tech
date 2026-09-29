@@ -1,7 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -31,19 +32,16 @@ body {
     height: 65px;
     background: #0b2d5c;
     color: white;
-
     padding: 0 25px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     margin-left: 250px;
     width: calc(100% - 250px);
-
     position: relative;
     z-index: 999;
 }
+
 .topbar h1 {
     font-size: 21px;
     color: white !important;
@@ -52,13 +50,9 @@ body {
 .back-btn {
     color: white;
     text-decoration: none;
-
     background: rgba(255,255,255,0.12);
-
     padding: 9px 14px;
-
     border-radius: 8px;
-
     transition: 0.2s ease;
 }
 
@@ -69,9 +63,7 @@ body {
 .container {
     width: calc(100% - 250px);
     max-width: none;
-
     margin: 0 0 0 250px;
-
     padding: 30px;
 }
 
@@ -412,6 +404,23 @@ select:focus {
 }
 
 /* ==============================
+   LOGO WORD PREVIEW
+============================== */
+
+.logo-word-preview {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.logo-word-ned {
+    color: #ffffff;
+}
+
+.logo-word-hub {
+    color: #ffd700;
+}
+
+/* ==============================
    SECTIONS
 ============================== */
 
@@ -687,93 +696,123 @@ select:focus {
 }
 
 @keyframes previewGradient {
+
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
+
 }
 
 @keyframes previewPulse {
+
     0%,100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.015);
     }
+
 }
 
 @keyframes previewWave {
+
     0%,100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-4px);
     }
+
 }
 
 @keyframes previewShimmer {
+
     0% {
         background-position: -200% 0;
     }
+
     100% {
         background-position: 200% 0;
     }
+
 }
 
 @keyframes previewShake {
+
     0%,100% {
         transform: translateX(0);
     }
+
     25% {
         transform: translateX(-2px);
     }
+
     75% {
         transform: translateX(2px);
     }
+
 }
 
 @keyframes previewNeon {
+
     from {
         filter: brightness(1);
     }
+
     to {
         filter: brightness(1.2);
     }
+
 }
 
 @keyframes previewFlow {
+
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
+
 }
 
 @keyframes floatingBlob {
+
     0%,100% {
         transform: translate(0,0) scale(1);
     }
+
     50% {
         transform: translate(35px,-20px) scale(1.25);
     }
+
 }
 
 @keyframes buttonPop {
+
     0%,100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.06);
     }
+
 }
 
 /* ==============================
@@ -783,11 +822,15 @@ select:focus {
 @media (max-width: 750px) {
 
     .topbar {
+        margin-left: 0;
+        width: 100%;
         padding: 15px;
     }
 
     .container {
-        width: 94%;
+        width: 100%;
+        margin-left: 0;
+        padding: 20px;
     }
 
     .form-grid {
@@ -831,30 +874,37 @@ select:focus {
 }
 
 </style>
-</head>
 
-<body>
+</head>
 
 <body>
 
 <!-- SHARED ADMIN SIDEBAR -->
 <aside class="sidebar" id="adminSidebar"></aside>
 
+
+<!-- TOP BAR -->
 <div class="topbar">
 
-    <h1>Website Manager</h1>
+    <h1>N — Website Manager</h1>
 
-    <a href="/admin/index.html" class="back-btn">
+    <a
+        href="/admin/index.html"
+        class="back-btn"
+    >
         ← Dashboard
     </a>
 
 </div>
 
+
 <div class="container">
 
     <div class="page-title">
 
-        <h2>Public Website Control</h2>
+        <h2>
+            Public Website Control
+        </h2>
 
         <p>
             Control how your NED HUB customer-facing website looks and what it displays.
@@ -918,14 +968,18 @@ select:focus {
          APPEARANCE
     ========================== -->
 
-    <div id="appearance" class="panel active">
-
+    <div
+        id="appearance"
+        class="panel active"
+    >
 
         <!-- WEBSITE COLORS -->
 
         <div class="card">
 
-            <h3>Website Colors</h3>
+            <h3>
+                Website Colors
+            </h3>
 
             <p class="card-description">
                 Change the colors used throughout the public NED HUB website.
@@ -935,7 +989,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Primary Color</label>
+                    <label>
+                        Primary Color
+                    </label>
 
                     <div class="color-row">
 
@@ -959,7 +1015,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Secondary Color</label>
+                    <label>
+                        Secondary Color
+                    </label>
 
                     <div class="color-row">
 
@@ -983,7 +1041,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Accent Color</label>
+                    <label>
+                        Accent Color
+                    </label>
 
                     <div class="color-row">
 
@@ -1007,7 +1067,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Header Color</label>
+                    <label>
+                        Header Color
+                    </label>
 
                     <div class="color-row">
 
@@ -1031,7 +1093,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Button Color</label>
+                    <label>
+                        Button Color
+                    </label>
 
                     <div class="color-row">
 
@@ -1055,7 +1119,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Website Background</label>
+                    <label>
+                        Website Background
+                    </label>
 
                     <div class="color-row">
 
@@ -1098,7 +1164,9 @@ select:focus {
 
                 <div>
 
-                    <h3>✨ Advanced Visual Effects</h3>
+                    <h3>
+                        ✨ Advanced Visual Effects
+                    </h3>
 
                     <p class="card-description">
                         Create animated gradients, glowing colours, moving effects,
@@ -1118,7 +1186,9 @@ select:focus {
 
             <div class="effects-section">
 
-                <h4>🌈 Animated Gradient</h4>
+                <h4>
+                    🌈 Animated Gradient
+                </h4>
 
                 <div class="effect-toggle-grid">
 
@@ -1157,11 +1227,16 @@ select:focus {
                 </div>
 
 
-                <div class="form-grid" style="margin-top:18px;">
+                <div
+                    class="form-grid"
+                    style="margin-top:18px;"
+                >
 
                     <div class="form-group">
 
-                        <label>Gradient Color 1</label>
+                        <label>
+                            Gradient Color 1
+                        </label>
 
                         <div class="color-row">
 
@@ -1185,7 +1260,9 @@ select:focus {
 
                     <div class="form-group">
 
-                        <label>Gradient Color 2</label>
+                        <label>
+                            Gradient Color 2
+                        </label>
 
                         <div class="color-row">
 
@@ -1209,7 +1286,9 @@ select:focus {
 
                     <div class="form-group">
 
-                        <label>Gradient Color 3</label>
+                        <label>
+                            Gradient Color 3
+                        </label>
 
                         <div class="color-row">
 
@@ -1233,7 +1312,9 @@ select:focus {
 
                     <div class="form-group">
 
-                        <label>Gradient Speed</label>
+                        <label>
+                            Gradient Speed
+                        </label>
 
                         <div class="range-wrapper">
 
@@ -1265,13 +1346,17 @@ select:focus {
 
             <div class="effects-section">
 
-                <h4>⚡ Main Animation Effect</h4>
+                <h4>
+                    ⚡ Main Animation Effect
+                </h4>
 
                 <div class="form-grid">
 
                     <div class="form-group">
 
-                        <label>Effect Type</label>
+                        <label>
+                            Effect Type
+                        </label>
 
                         <select id="effectType">
 
@@ -1310,7 +1395,9 @@ select:focus {
 
                     <div class="form-group">
 
-                        <label>Effect Intensity</label>
+                        <label>
+                            Effect Intensity
+                        </label>
 
                         <div class="range-wrapper">
 
@@ -1342,7 +1429,9 @@ select:focus {
 
             <div class="effects-section">
 
-                <h4>✨ Extra Effects</h4>
+                <h4>
+                    ✨ Extra Effects
+                </h4>
 
                 <div class="effect-toggle-grid">
 
@@ -1418,7 +1507,9 @@ select:focus {
 
             <div class="effects-section">
 
-                <h4>🎭 Effect Presets</h4>
+                <h4>
+                    🎭 Effect Presets
+                </h4>
 
                 <p
                     class="card-description"
@@ -1476,8 +1567,6 @@ select:focus {
             </div>
 
 
-            <!-- ACTIONS -->
-
             <div class="effects-actions">
 
                 <button
@@ -1499,11 +1588,15 @@ select:focus {
         </div>
 
 
-        <!-- WEBSITE THEME -->
+        <!-- =========================
+             WEBSITE THEME
+        ========================== -->
 
         <div class="card">
 
-            <h3>Website Theme</h3>
+            <h3>
+                Website Theme
+            </h3>
 
             <p class="card-description">
                 Choose the overall appearance of the public website.
@@ -1513,7 +1606,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Theme Mode</label>
+                    <label>
+                        Theme Mode
+                    </label>
 
                     <select id="themeMode">
 
@@ -1536,7 +1631,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Button Style</label>
+                    <label>
+                        Button Style
+                    </label>
 
                     <select id="buttonStyle">
 
@@ -1568,21 +1665,30 @@ select:focus {
         </div>
 
 
-        <!-- BRANDING -->
+        <!-- =========================
+             BRANDING
+        ========================== -->
 
         <div class="card">
 
-            <h3>Branding</h3>
+            <h3>
+                Branding
+            </h3>
 
             <p class="card-description">
-                Change your store identity.
+                Change your store identity and control the individual colours of NED and HUB.
             </p>
+
 
             <div class="form-grid">
 
+                <!-- STORE NAME -->
+
                 <div class="form-group">
 
-                    <label>Store Name</label>
+                    <label for="storeName">
+                        Store Name
+                    </label>
 
                     <input
                         id="storeName"
@@ -1593,9 +1699,13 @@ select:focus {
                 </div>
 
 
+                <!-- TAGLINE -->
+
                 <div class="form-group">
 
-                    <label>Store Tagline</label>
+                    <label for="storeTagline">
+                        Store Tagline
+                    </label>
 
                     <input
                         id="storeTagline"
@@ -1606,9 +1716,71 @@ select:focus {
                 </div>
 
 
+                <!-- NED COLOR -->
+
+                <div class="form-group">
+
+                    <label for="nedLogoColor">
+                        NED Color
+                    </label>
+
+                    <div class="color-row">
+
+                        <input
+                            type="color"
+                            id="nedLogoColor"
+                            class="color-picker"
+                            value="#ffffff"
+                        >
+
+                        <input
+                            type="text"
+                            id="nedLogoColorText"
+                            value="#ffffff"
+                            placeholder="#ffffff"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- HUB COLOR -->
+
+                <div class="form-group">
+
+                    <label for="hubLogoColor">
+                        HUB Color
+                    </label>
+
+                    <div class="color-row">
+
+                        <input
+                            type="color"
+                            id="hubLogoColor"
+                            class="color-picker"
+                            value="#ffd700"
+                        >
+
+                        <input
+                            type="text"
+                            id="hubLogoColorText"
+                            value="#ffd700"
+                            placeholder="#ffd700"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOGO URL -->
+
                 <div class="form-group full">
 
-                    <label>Logo URL</label>
+                    <label for="logoUrl">
+                        Logo URL
+                    </label>
 
                     <input
                         id="logoUrl"
@@ -1619,6 +1791,7 @@ select:focus {
                 </div>
 
             </div>
+
 
             <button
                 class="save-btn"
@@ -1636,11 +1809,16 @@ select:focus {
          HOMEPAGE
     ========================== -->
 
-    <div id="homepage" class="panel">
+    <div
+        id="homepage"
+        class="panel"
+    >
 
         <div class="card">
 
-            <h3>Homepage Display</h3>
+            <h3>
+                Homepage Display
+            </h3>
 
             <p class="card-description">
                 Choose which major areas appear on the public homepage.
@@ -1750,7 +1928,10 @@ select:focus {
          SECTIONS
     ========================== -->
 
-    <div id="sections" class="panel">
+    <div
+        id="sections"
+        class="panel"
+    >
 
         <div class="page-title">
 
@@ -1762,6 +1943,7 @@ select:focus {
             </button>
 
         </div>
+
 
         <div id="sectionsContainer">
 
@@ -1778,11 +1960,16 @@ select:focus {
          HEADER
     ========================== -->
 
-    <div id="header" class="panel">
+    <div
+        id="header"
+        class="panel"
+    >
 
         <div class="card">
 
-            <h3>Header & Navigation</h3>
+            <h3>
+                Header & Navigation
+            </h3>
 
             <p class="card-description">
                 Control what customers see at the top of the website.
@@ -1792,7 +1979,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Header Store Name</label>
+                    <label for="headerStoreName">
+                        Header Store Name
+                    </label>
 
                     <input
                         id="headerStoreName"
@@ -1804,7 +1993,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Search Bar</label>
+                    <label for="showSearch">
+                        Search Bar
+                    </label>
 
                     <select id="showSearch">
 
@@ -1823,7 +2014,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Cart Button</label>
+                    <label for="showCart">
+                        Cart Button
+                    </label>
 
                     <select id="showCart">
 
@@ -1842,7 +2035,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Account/Login</label>
+                    <label for="showAccount">
+                        Account/Login
+                    </label>
 
                     <select id="showAccount">
 
@@ -1860,6 +2055,7 @@ select:focus {
 
             </div>
 
+
             <button
                 class="save-btn"
                 onclick="saveHeader()"
@@ -1876,11 +2072,16 @@ select:focus {
          FOOTER
     ========================== -->
 
-    <div id="footer" class="panel">
+    <div
+        id="footer"
+        class="panel"
+    >
 
         <div class="card">
 
-            <h3>Footer</h3>
+            <h3>
+                Footer
+            </h3>
 
             <p class="card-description">
                 Control the information displayed at the bottom of your website.
@@ -1890,7 +2091,9 @@ select:focus {
 
                 <div class="form-group full">
 
-                    <label>Footer Description</label>
+                    <label for="footerDescription">
+                        Footer Description
+                    </label>
 
                     <textarea
                         id="footerDescription"
@@ -1902,7 +2105,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Phone</label>
+                    <label for="footerPhone">
+                        Phone
+                    </label>
 
                     <input
                         id="footerPhone"
@@ -1914,7 +2119,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Email</label>
+                    <label for="footerEmail">
+                        Email
+                    </label>
 
                     <input
                         id="footerEmail"
@@ -1926,7 +2133,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Facebook</label>
+                    <label for="facebook">
+                        Facebook
+                    </label>
 
                     <input
                         id="facebook"
@@ -1938,7 +2147,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>Instagram</label>
+                    <label for="instagram">
+                        Instagram
+                    </label>
 
                     <input
                         id="instagram"
@@ -1950,7 +2161,9 @@ select:focus {
 
                 <div class="form-group">
 
-                    <label>WhatsApp</label>
+                    <label for="whatsapp">
+                        WhatsApp
+                    </label>
 
                     <input
                         id="whatsapp"
@@ -1960,6 +2173,7 @@ select:focus {
                 </div>
 
             </div>
+
 
             <button
                 class="save-btn"
@@ -1977,15 +2191,21 @@ select:focus {
          PREVIEW
     ========================== -->
 
-    <div id="preview" class="panel">
+    <div
+        id="preview"
+        class="panel"
+    >
 
         <div class="card">
 
-            <h3>Live Interface Preview</h3>
+            <h3>
+                Live Interface Preview
+            </h3>
 
             <p class="card-description">
-                Preview your current colors, gradients and animations.
+                Preview your current colors, gradients, animations and logo colours.
             </p>
+
 
             <div
                 class="live-preview"
@@ -1997,9 +2217,27 @@ select:focus {
                     id="previewHeader"
                 >
 
-                    <strong id="previewStoreName">
-                        NED HUB
+                    <strong
+                        id="previewStoreName"
+                        class="logo-word-preview"
+                    >
+
+                        <span
+                            id="previewNed"
+                            class="logo-word-ned"
+                        >
+                            NED
+                        </span>
+
+                        <span
+                            id="previewHub"
+                            class="logo-word-hub"
+                        >
+                            HUB
+                        </span>
+
                     </strong>
+
 
                     <span>
                         🔍 Search &nbsp; 🛒 Cart &nbsp; 👤 Account
@@ -2013,15 +2251,18 @@ select:focus {
                     id="previewBody"
                 >
 
-                    <h2>
+                    <h2 id="previewWelcome">
                         Welcome to NED HUB
                     </h2>
 
+
                     <p
+                        id="previewTagline"
                         style="margin-top:10px;color:#667085;"
                     >
                         Your online shopping destination.
                     </p>
+
 
                     <a
                         class="preview-button"
@@ -2045,7 +2286,10 @@ select:focus {
      SECTION MODAL
 ========================== -->
 
-<div id="sectionModal" class="modal">
+<div
+    id="sectionModal"
+    class="modal"
+>
 
     <div class="modal-content">
 
@@ -2075,7 +2319,9 @@ select:focus {
 
             <div class="form-group">
 
-                <label>Section Name</label>
+                <label for="sectionName">
+                    Section Name
+                </label>
 
                 <input
                     id="sectionName"
@@ -2088,7 +2334,9 @@ select:focus {
 
             <div class="form-group">
 
-                <label>Title</label>
+                <label for="sectionTitle">
+                    Title
+                </label>
 
                 <input
                     id="sectionTitle"
@@ -2100,7 +2348,9 @@ select:focus {
 
             <div class="form-group">
 
-                <label>Description</label>
+                <label for="sectionDescription">
+                    Description
+                </label>
 
                 <textarea
                     id="sectionDescription"
@@ -2126,10 +2376,12 @@ select:focus {
                     Choose an image for this website section. Maximum 5MB.
                 </small>
 
+
                 <div
                     id="sectionImagePreview"
                     style="margin-top:12px;"
                 ></div>
+
 
                 <input
                     type="hidden"
@@ -2142,7 +2394,9 @@ select:focus {
 
             <div class="form-group">
 
-                <label>Button Text</label>
+                <label for="buttonText">
+                    Button Text
+                </label>
 
                 <input
                     id="buttonText"
@@ -2154,7 +2408,9 @@ select:focus {
 
             <div class="form-group">
 
-                <label>Button Link</label>
+                <label for="buttonLink">
+                    Button Link
+                </label>
 
                 <input
                     id="buttonLink"
@@ -2166,7 +2422,9 @@ select:focus {
 
             <div class="form-group">
 
-                <label>Display Order</label>
+                <label for="displayOrder">
+                    Display Order
+                </label>
 
                 <input
                     type="number"
@@ -2204,6 +2462,7 @@ select:focus {
                     Cancel
                 </button>
 
+
                 <button
                     type="submit"
                     class="save-btn"
@@ -2237,17 +2496,30 @@ function openTab(tabId, button) {
             panel.classList.remove("active");
         });
 
+
     document
         .querySelectorAll(".tab-btn")
         .forEach(btn => {
             btn.classList.remove("active");
         });
 
-    document
-        .getElementById(tabId)
-        .classList.add("active");
 
-    button.classList.add("active");
+    const panel =
+        document.getElementById(tabId);
+
+
+    if (panel) {
+
+        panel.classList.add("active");
+
+    }
+
+
+    if (button) {
+
+        button.classList.add("active");
+
+    }
 
 }
 
@@ -2261,24 +2533,34 @@ function connectColorPicker(colorId, textId) {
     const color =
         document.getElementById(colorId);
 
+
     const text =
         document.getElementById(textId);
 
+
     if (!color || !text) return;
+
 
     color.addEventListener("input", () => {
 
-        text.value = color.value;
+        text.value =
+            color.value;
 
         updatePreview();
 
     });
 
+
     text.addEventListener("input", () => {
 
-        if (/^#[0-9A-Fa-f]{6}$/.test(text.value)) {
+        if (
+            /^#[0-9A-Fa-f]{6}$/.test(
+                text.value
+            )
+        ) {
 
-            color.value = text.value;
+            color.value =
+                text.value;
 
             updatePreview();
 
@@ -2340,41 +2622,283 @@ connectColorPicker(
 );
 
 
+/* ==============================
+   NEW LOGO COLORS
+============================== */
+
+connectColorPicker(
+    "nedLogoColor",
+    "nedLogoColorText"
+);
+
+connectColorPicker(
+    "hubLogoColor",
+    "hubLogoColorText"
+);
+
+
 /* ======================================
    RANGE CONTROLS
 ====================================== */
 
 const gradientSpeed =
-    document.getElementById("gradientSpeed");
+    document.getElementById(
+        "gradientSpeed"
+    );
+
 
 const gradientSpeedValue =
-    document.getElementById("gradientSpeedValue");
+    document.getElementById(
+        "gradientSpeedValue"
+    );
+
 
 const effectIntensity =
-    document.getElementById("effectIntensity");
+    document.getElementById(
+        "effectIntensity"
+    );
+
 
 const effectIntensityValue =
-    document.getElementById("effectIntensityValue");
+    document.getElementById(
+        "effectIntensityValue"
+    );
 
 
-gradientSpeed.addEventListener("input", () => {
+gradientSpeed.addEventListener(
+    "input",
+    () => {
 
-    gradientSpeedValue.textContent =
-        gradientSpeed.value + "s";
+        gradientSpeedValue.textContent =
+            gradientSpeed.value + "s";
+
+        updatePreview();
+
+    }
+);
+
+
+effectIntensity.addEventListener(
+    "input",
+    () => {
+
+        effectIntensityValue.textContent =
+            effectIntensity.value + "%";
+
+        updatePreview();
+
+    }
+);
+
+
+/* ======================================
+   MASTER STORE NAME
+====================================== */
+
+function getMasterStoreName() {
+
+    const field =
+        document.getElementById(
+            "storeName"
+        );
+
+
+    if (!field) {
+        return "NED HUB";
+    }
+
+
+    const storeName =
+        field.value.trim();
+
+
+    return storeName || "NED HUB";
+
+}
+
+
+function synchronizeStoreName(value) {
+
+    const cleanName =
+        String(value || "").trim();
+
+
+    if (!cleanName) return;
+
+
+    const brandingField =
+        document.getElementById(
+            "storeName"
+        );
+
+
+    const headerField =
+        document.getElementById(
+            "headerStoreName"
+        );
+
+
+    if (brandingField) {
+
+        brandingField.value =
+            cleanName;
+
+    }
+
+
+    if (headerField) {
+
+        headerField.value =
+            cleanName;
+
+    }
+
 
     updatePreview();
 
-});
+}
 
 
-effectIntensity.addEventListener("input", () => {
+/* ======================================
+   STORE NAME INPUTS
+====================================== */
 
-    effectIntensityValue.textContent =
-        effectIntensity.value + "%";
+document
+    .getElementById("storeName")
+    .addEventListener(
+        "input",
+        function() {
 
-    updatePreview();
+            const value =
+                this.value;
 
-});
+
+            const headerField =
+                document.getElementById(
+                    "headerStoreName"
+                );
+
+
+            if (headerField) {
+
+                headerField.value =
+                    value;
+
+            }
+
+
+            updatePreview();
+
+        }
+    );
+
+
+document
+    .getElementById("headerStoreName")
+    .addEventListener(
+        "input",
+        function() {
+
+            const value =
+                this.value;
+
+
+            const storeField =
+                document.getElementById(
+                    "storeName"
+                );
+
+
+            if (storeField) {
+
+                storeField.value =
+                    value;
+
+            }
+
+
+            updatePreview();
+
+        }
+    );
+
+
+/* ======================================
+   LOGO PREVIEW
+====================================== */
+
+function updateLogoPreview() {
+
+    const masterName =
+        getMasterStoreName();
+
+
+    const words =
+        masterName
+            .trim()
+            .split(/\s+/);
+
+
+    let nedText =
+        words[0] || "NED";
+
+
+    let hubText =
+        words
+            .slice(1)
+            .join(" ") || "HUB";
+
+
+    const previewNed =
+        document.getElementById(
+            "previewNed"
+        );
+
+
+    const previewHub =
+        document.getElementById(
+            "previewHub"
+        );
+
+
+    const nedColor =
+        document.getElementById(
+            "nedLogoColor"
+        );
+
+
+    const hubColor =
+        document.getElementById(
+            "hubLogoColor"
+        );
+
+
+    if (previewNed) {
+
+        previewNed.textContent =
+            nedText;
+
+        previewNed.style.color =
+            nedColor
+                ? nedColor.value
+                : "#ffffff";
+
+    }
+
+
+    if (previewHub) {
+
+        previewHub.textContent =
+            hubText;
+
+        previewHub.style.color =
+            hubColor
+                ? hubColor.value
+                : "#ffd700";
+
+    }
+
+}
 
 
 /* ======================================
@@ -2384,59 +2908,123 @@ effectIntensity.addEventListener("input", () => {
 function updatePreview() {
 
     const header =
-        document.getElementById("previewHeader");
+        document.getElementById(
+            "previewHeader"
+        );
+
 
     const body =
-        document.getElementById("previewBody");
+        document.getElementById(
+            "previewBody"
+        );
+
 
     const button =
-        document.getElementById("previewButton");
+        document.getElementById(
+            "previewButton"
+        );
 
-    const storeName =
-        document.getElementById("previewStoreName");
+
+    const welcome =
+        document.getElementById(
+            "previewWelcome"
+        );
+
 
     const livePreview =
-        document.getElementById("livePreview");
+        document.getElementById(
+            "livePreview"
+        );
+
+
+    if (
+        !header ||
+        !body ||
+        !button ||
+        !livePreview
+    ) {
+
+        return;
+
+    }
 
 
     const headerColor =
-        document.getElementById("headerColor").value;
+        document.getElementById(
+            "headerColor"
+        ).value;
+
 
     const backgroundColor =
-        document.getElementById("backgroundColor").value;
+        document.getElementById(
+            "backgroundColor"
+        ).value;
+
 
     const buttonColor =
-        document.getElementById("buttonColor").value;
+        document.getElementById(
+            "buttonColor"
+        ).value;
+
 
     const gradientEnabled =
-        document.getElementById("gradientEnabled").checked;
+        document.getElementById(
+            "gradientEnabled"
+        ).checked;
+
 
     const gradientAnimation =
-        document.getElementById("gradientAnimation").checked;
+        document.getElementById(
+            "gradientAnimation"
+        ).checked;
+
 
     const gradientColor1 =
-        document.getElementById("gradientColor1").value;
+        document.getElementById(
+            "gradientColor1"
+        ).value;
+
 
     const gradientColor2 =
-        document.getElementById("gradientColor2").value;
+        document.getElementById(
+            "gradientColor2"
+        ).value;
+
 
     const gradientColor3 =
-        document.getElementById("gradientColor3").value;
+        document.getElementById(
+            "gradientColor3"
+        ).value;
+
 
     const effectType =
-        document.getElementById("effectType").value;
+        document.getElementById(
+            "effectType"
+        ).value;
+
 
     const glowEnabled =
-        document.getElementById("glowEnabled").checked;
+        document.getElementById(
+            "glowEnabled"
+        ).checked;
+
 
     const floatingBlobs =
-        document.getElementById("floatingBlobs").checked;
+        document.getElementById(
+            "floatingBlobs"
+        ).checked;
+
 
     const animatedHeader =
-        document.getElementById("animatedHeader").checked;
+        document.getElementById(
+            "animatedHeader"
+        ).checked;
+
 
     const animatedButtons =
-        document.getElementById("animatedButtons").checked;
+        document.getElementById(
+            "animatedButtons"
+        ).checked;
 
 
     /* BASE COLORS */
@@ -2444,8 +3032,10 @@ function updatePreview() {
     header.style.background =
         headerColor;
 
+
     body.style.background =
         backgroundColor;
+
 
     button.style.background =
         buttonColor;
@@ -2467,8 +3057,10 @@ function updatePreview() {
         header.style.background =
             gradient;
 
+
         body.style.background =
             gradient;
+
 
         if (gradientAnimation) {
 
@@ -2476,17 +3068,21 @@ function updatePreview() {
                 "preview-animated-gradient"
             );
 
+
             body.classList.add(
                 "preview-animated-gradient"
             );
+
 
             const speed =
                 document.getElementById(
                     "gradientSpeed"
                 ).value;
 
+
             header.style.animationDuration =
                 speed + "s";
+
 
             body.style.animationDuration =
                 speed + "s";
@@ -2496,6 +3092,7 @@ function updatePreview() {
             header.classList.remove(
                 "preview-animated-gradient"
             );
+
 
             body.classList.remove(
                 "preview-animated-gradient"
@@ -2508,6 +3105,7 @@ function updatePreview() {
         header.classList.remove(
             "preview-animated-gradient"
         );
+
 
         body.classList.remove(
             "preview-animated-gradient"
@@ -2527,7 +3125,9 @@ function updatePreview() {
         "preview-flow"
     ].forEach(className => {
 
-        livePreview.classList.remove(className);
+        livePreview.classList.remove(
+            className
+        );
 
     });
 
@@ -2620,25 +3220,27 @@ function updatePreview() {
             ).value
         ) / 100;
 
+
     livePreview.style.opacity =
         0.65 + (intensity * 0.35);
 
 
     /* STORE NAME */
 
-    storeName.textContent =
-        document.getElementById("storeName").value ||
-        "NED HUB";
+    if (welcome) {
+
+        welcome.textContent =
+            "Welcome to " +
+            getMasterStoreName();
+
+    }
+
+
+    /* SEPARATE NED / HUB COLORS */
+
+    updateLogoPreview();
 
 }
-
-
-document
-    .getElementById("storeName")
-    .addEventListener(
-        "input",
-        updatePreview
-    );
 
 
 /* ======================================
@@ -2701,7 +3303,11 @@ async function loadSettings() {
             await response.json();
 
 
-        if (!data.success) return;
+        if (!data.success) {
+
+            return;
+
+        }
 
 
         const settings =
@@ -2716,11 +3322,13 @@ async function loadSettings() {
             "#1479ff"
         );
 
+
         setSetting(
             "secondaryColor",
             settings.secondary_color,
             "#071a33"
         );
+
 
         setSetting(
             "accentColor",
@@ -2728,17 +3336,20 @@ async function loadSettings() {
             "#f5b700"
         );
 
+
         setSetting(
             "headerColor",
             settings.header_color,
             "#071a33"
         );
 
+
         setSetting(
             "buttonColor",
             settings.button_color,
             "#1479ff"
         );
+
 
         setSetting(
             "backgroundColor",
@@ -2747,94 +3358,189 @@ async function loadSettings() {
         );
 
 
-        /* BRANDING */
+        /* ==================================
+           BRANDING
+        ================================== */
 
-        document.getElementById("storeName").value =
-            settings.store_name || "NED HUB";
+        const masterStoreName =
+            settings.store_name ||
+            settings.header_store_name ||
+            "NED HUB";
 
-        document.getElementById("storeTagline").value =
+
+        document.getElementById(
+            "storeName"
+        ).value =
+            masterStoreName;
+
+
+        document.getElementById(
+            "storeTagline"
+        ).value =
             settings.store_tagline || "";
 
-        document.getElementById("logoUrl").value =
+
+        document.getElementById(
+            "logoUrl"
+        ).value =
             settings.logo_url || "";
 
 
-        /* THEME */
+        /* ==============================
+           NED COLOR
+        ============================== */
 
-        document.getElementById("themeMode").value =
-            settings.theme_mode || "light";
-
-        document.getElementById("buttonStyle").value =
-            settings.button_style || "rounded";
-
-
-        /* HOMEPAGE */
-
-        document.getElementById("showHero").checked =
-            settings.show_hero !== "false";
-
-        document.getElementById("showCategories").checked =
-            settings.show_categories !== "false";
-
-        document.getElementById("showProducts").checked =
-            settings.show_products !== "false";
-
-        document.getElementById("showFeatured").checked =
-            settings.show_featured !== "false";
-
-        document.getElementById("showSections").checked =
-            settings.show_sections !== "false";
+        setSetting(
+            "nedLogoColor",
+            settings.ned_logo_color,
+            "#ffffff"
+        );
 
 
-        /* HEADER */
+        /* ==============================
+           HUB COLOR
+        ============================== */
 
-        document.getElementById("headerStoreName").value =
-            settings.header_store_name || "NED HUB";
+        setSetting(
+            "hubLogoColor",
+            settings.hub_logo_color,
+            "#ffd700"
+        );
 
-        document.getElementById("showSearch").value =
+
+        /* ==================================
+           HEADER
+        ================================== */
+
+        document.getElementById(
+            "headerStoreName"
+        ).value =
+            masterStoreName;
+
+
+        document.getElementById(
+            "showSearch"
+        ).value =
             settings.show_search || "yes";
 
-        document.getElementById("showCart").value =
+
+        document.getElementById(
+            "showCart"
+        ).value =
             settings.show_cart || "yes";
 
-        document.getElementById("showAccount").value =
+
+        document.getElementById(
+            "showAccount"
+        ).value =
             settings.show_account || "yes";
 
 
-        /* FOOTER */
+        /* ==================================
+           HOMEPAGE
+        ================================== */
 
-        document.getElementById("footerDescription").value =
+        document.getElementById(
+            "showHero"
+        ).checked =
+            settings.show_hero !== "false";
+
+
+        document.getElementById(
+            "showCategories"
+        ).checked =
+            settings.show_categories !== "false";
+
+
+        document.getElementById(
+            "showProducts"
+        ).checked =
+            settings.show_products !== "false";
+
+
+        document.getElementById(
+            "showFeatured"
+        ).checked =
+            settings.show_featured !== "false";
+
+
+        document.getElementById(
+            "showSections"
+        ).checked =
+            settings.show_sections !== "false";
+
+
+        /* ==================================
+           FOOTER
+        ================================== */
+
+        document.getElementById(
+            "footerDescription"
+        ).value =
             settings.footer_description || "";
 
-        document.getElementById("footerPhone").value =
+
+        document.getElementById(
+            "footerPhone"
+        ).value =
             settings.footer_phone || "";
 
-        document.getElementById("footerEmail").value =
+
+        document.getElementById(
+            "footerEmail"
+        ).value =
             settings.footer_email || "";
 
-        document.getElementById("facebook").value =
+
+        document.getElementById(
+            "facebook"
+        ).value =
             settings.facebook || "";
 
-        document.getElementById("instagram").value =
+
+        document.getElementById(
+            "instagram"
+        ).value =
             settings.instagram || "";
 
-        document.getElementById("whatsapp").value =
+
+        document.getElementById(
+            "whatsapp"
+        ).value =
             settings.whatsapp || "";
 
 
-        /* ==========================
+        /* ==================================
+           THEME
+        ================================== */
+
+        document.getElementById(
+            "themeMode"
+        ).value =
+            settings.theme_mode || "light";
+
+
+        document.getElementById(
+            "buttonStyle"
+        ).value =
+            settings.button_style || "rounded";
+
+
+        /* ==================================
            VISUAL EFFECT SETTINGS
-        ========================== */
+        ================================== */
 
         document.getElementById(
             "gradientEnabled"
         ).checked =
+            settings.gradient_enabled === true ||
             settings.gradient_enabled === "true";
 
 
         document.getElementById(
             "gradientAnimation"
         ).checked =
+            settings.gradient_animation !== false &&
             settings.gradient_animation !== "false";
 
 
@@ -2888,26 +3594,32 @@ async function loadSettings() {
         document.getElementById(
             "glowEnabled"
         ).checked =
+            settings.glow_enabled === true ||
             settings.glow_enabled === "true";
 
 
         document.getElementById(
             "floatingBlobs"
         ).checked =
+            settings.floating_blobs === true ||
             settings.floating_blobs === "true";
 
 
         document.getElementById(
             "animatedHeader"
         ).checked =
+            settings.animated_header === true ||
             settings.animated_header === "true";
 
 
         document.getElementById(
             "animatedButtons"
         ).checked =
+            settings.animated_buttons === true ||
             settings.animated_buttons === "true";
 
+
+        /* UPDATE PREVIEW */
 
         updatePreview();
 
@@ -2928,10 +3640,15 @@ async function loadSettings() {
    SET SETTING
 ====================================== */
 
-function setSetting(id, value, fallback) {
+function setSetting(
+    id,
+    value,
+    fallback
+) {
 
     const input =
         document.getElementById(id);
+
 
     const text =
         document.getElementById(
@@ -3201,110 +3918,81 @@ function applyEffectPreset(preset) {
     const presets = {
 
         ocean: {
-
             color1: "#071a33",
             color2: "#1479ff",
             color3: "#00d4ff",
-
             effect: "wave",
             speed: 6,
             intensity: 70,
-
             glow: true,
             blobs: true,
             header: true,
             buttons: true
-
         },
 
-
         neon: {
-
             color1: "#071a33",
             color2: "#7b2cff",
             color3: "#00e5ff",
-
             effect: "neon",
             speed: 5,
             intensity: 85,
-
             glow: true,
             blobs: true,
             header: true,
             buttons: true
-
         },
 
-
         sunset: {
-
             color1: "#ff512f",
             color2: "#dd2476",
             color3: "#f5b700",
-
             effect: "flow",
             speed: 8,
             intensity: 75,
-
             glow: true,
             blobs: true,
             header: true,
             buttons: true
-
         },
 
-
         purple: {
-
             color1: "#240046",
             color2: "#7b2cff",
             color3: "#c77dff",
-
             effect: "pulse",
             speed: 7,
             intensity: 65,
-
             glow: true,
             blobs: true,
             header: true,
             buttons: true
-
         },
 
-
         cyber: {
-
             color1: "#001219",
             color2: "#00f5d4",
             color3: "#00bbf9",
-
             effect: "shimmer",
             speed: 4,
             intensity: 90,
-
             glow: true,
             blobs: true,
             header: true,
             buttons: true
-
         },
 
-
         fire: {
-
             color1: "#370617",
             color2: "#d00000",
             color3: "#ffba08",
-
             effect: "shake",
             speed: 5,
             intensity: 80,
-
             glow: true,
             blobs: true,
             header: true,
             buttons: true
-
         }
 
     };
@@ -3312,6 +4000,7 @@ function applyEffectPreset(preset) {
 
     const selected =
         presets[preset];
+
 
     if (!selected) return;
 
@@ -3322,11 +4011,13 @@ function applyEffectPreset(preset) {
         selected.color1
     );
 
+
     setSetting(
         "gradientColor2",
         selected.color2,
         selected.color2
     );
+
 
     setSetting(
         "gradientColor3",
@@ -3445,12 +4136,83 @@ async function saveBranding() {
 
     try {
 
+        const storeName =
+            document.getElementById(
+                "storeName"
+            ).value.trim();
+
+
+        if (!storeName) {
+
+            alert(
+                "Please enter a store name."
+            );
+
+            return;
+
+        }
+
+
+        const nedColor =
+            document.getElementById(
+                "nedLogoColorText"
+            ).value;
+
+
+        const hubColor =
+            document.getElementById(
+                "hubLogoColorText"
+            ).value;
+
+
+        /* VALIDATE NED COLOR */
+
+        if (
+            !/^#[0-9A-Fa-f]{6}$/.test(
+                nedColor
+            )
+        ) {
+
+            alert(
+                "NED Color must be a valid HEX colour such as #ffffff."
+            );
+
+            return;
+
+        }
+
+
+        /* VALIDATE HUB COLOR */
+
+        if (
+            !/^#[0-9A-Fa-f]{6}$/.test(
+                hubColor
+            )
+        ) {
+
+            alert(
+                "HUB Color must be a valid HEX colour such as #ffd700."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * STORE NAME IS THE MASTER.
+         *
+         * Both database settings use
+         * exactly the same store name.
+         */
+
         await saveSettings({
 
             store_name:
-                document.getElementById(
-                    "storeName"
-                ).value,
+                storeName,
+
+            header_store_name:
+                storeName,
 
             store_tagline:
                 document.getElementById(
@@ -3460,17 +4222,33 @@ async function saveBranding() {
             logo_url:
                 document.getElementById(
                     "logoUrl"
-                ).value
+                ).value,
+
+            /*
+             * NEW:
+             * Separate NED and HUB colours.
+             */
+
+            ned_logo_color:
+                nedColor,
+
+            hub_logo_color:
+                hubColor
 
         });
 
 
-        alert(
-            "Branding saved successfully."
+        synchronizeStoreName(
+            storeName
         );
 
 
         updatePreview();
+
+
+        alert(
+            "Branding saved successfully. NED and HUB colours have been updated."
+        );
 
 
     } catch (error) {
@@ -3542,12 +4320,30 @@ async function saveHeader() {
 
     try {
 
+        const storeName =
+            document.getElementById(
+                "headerStoreName"
+            ).value.trim();
+
+
+        if (!storeName) {
+
+            alert(
+                "Please enter a store name."
+            );
+
+            return;
+
+        }
+
+
         await saveSettings({
 
+            store_name:
+                storeName,
+
             header_store_name:
-                document.getElementById(
-                    "headerStoreName"
-                ).value,
+                storeName,
 
             show_search:
                 document.getElementById(
@@ -3567,8 +4363,13 @@ async function saveHeader() {
         });
 
 
+        synchronizeStoreName(
+            storeName
+        );
+
+
         alert(
-            "Header settings saved."
+            "Header settings saved. The store name has been updated across the website."
         );
 
 
@@ -3891,7 +4692,8 @@ function editSection(id) {
     const section =
         sections.find(
             item =>
-                Number(item.id) === Number(id)
+                Number(item.id) ===
+                Number(id)
         );
 
 
@@ -3955,7 +4757,9 @@ function editSection(id) {
     document.getElementById(
         "isVisible"
     ).checked =
-        Boolean(section.is_visible);
+        Boolean(
+            section.is_visible
+        );
 
 
     document.getElementById(
@@ -4051,11 +4855,13 @@ document
                 const response =
                     await fetch(
                         id
-                        ? `/api/admin/website-sections/${id}`
-                        : "/api/admin/website-sections",
+                            ? `/api/admin/website-sections/${id}`
+                            : "/api/admin/website-sections",
                         {
                             method:
-                                id ? "PUT" : "POST",
+                                id
+                                    ? "PUT"
+                                    : "POST",
 
                             headers: {
                                 "Content-Type":
@@ -4091,12 +4897,15 @@ document
 
                 closeModal();
 
+
                 loadSections();
 
 
             } catch (error) {
 
-                alert(error.message);
+                alert(
+                    error.message
+                );
 
             }
 
@@ -4139,7 +4948,9 @@ async function toggleSection(id) {
 
     } catch (error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
 
     }
 
@@ -4152,9 +4963,11 @@ async function toggleSection(id) {
 
 async function deleteSection(id) {
 
-    if (!confirm(
-        "Delete this website section?"
-    )) {
+    if (
+        !confirm(
+            "Delete this website section?"
+        )
+    ) {
 
         return;
 
@@ -4190,7 +5003,9 @@ async function deleteSection(id) {
 
     } catch (error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
 
     }
 
@@ -4204,7 +5019,9 @@ async function deleteSection(id) {
 function escapeHtml(text) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     div.textContent =
@@ -4219,10 +5036,22 @@ function escapeHtml(text) {
 function escapeAttribute(text) {
 
     return String(text || "")
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        );
 
 }
 
@@ -4238,10 +5067,10 @@ loadSections();
 updatePreview();
 
 </script>
+
+
 <script src="/admin/js/admin-sidebar.js"></script>
 
-
-
 </body>
+
 </html>
-```

@@ -20,16 +20,6 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 
-
-const emailTransporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.NED_HUB_EMAIL,
-        pass: process.env.NED_HUB_EMAIL_PASSWORD
-    }
-});
-
-
 // ==========================================
 // BANNER IMAGE UPLOAD
 // ==========================================
@@ -128,6 +118,8 @@ console.log("---------------------------------");
 
 const app = express();
 
+console.log("🔥 THIS IS THE NED HUB SERVER.JS FILE");
+
 const PORT = 3000;
 
 
@@ -135,16 +127,22 @@ const PORT = 3000;
    MYSQL DATABASE
 ========================================= */
 
-
 const db = mysql.createPool({
+
     host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT || 3306),
+
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+
+    password: process.env.DB_PASSWORD || "",
+
     database: process.env.DB_NAME,
+
     waitForConnections: true,
+
     connectionLimit: 10,
+
     queueLimit: 0
+
 });
 
 
@@ -188,6 +186,41 @@ async function testDatabase() {
 }
 
 testDatabase();
+
+/* =========================================
+   CUSTOMER CARE TABLE
+========================================= */
+
+async function createCustomerCareTable() {
+
+    try {
+
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS customer_care_messages (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                sender_type ENUM('customer', 'admin') NOT NULL,
+                message TEXT NOT NULL,
+                is_read TINYINT(1) DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        console.log("Customer Care table is ready.");
+
+    } catch (error) {
+
+        console.error(
+            "Customer Care table creation failed:",
+            error.message
+        );
+
+    }
+
+}
+
+createCustomerCareTable();
+
 
 
 /* =========================================
@@ -314,6 +347,7 @@ app.use(
 // ========================================
 // ADMIN PAGE AUTHENTICATION
 // ========================================
+
 
 function requireAdminPage(req, res, next) {
 
@@ -4337,138 +4371,6 @@ async function createOrderFromRequest(
 
         await connection.commit();
 
-        /* =================================
-   EMAIL NEW ORDER NOTIFICATION
-================================= */
-
-try {
-
-    const productLines = orderItems.map(item => {
-
-        return `
-            <li>
-                Product ID: ${item.productId}
-                | Quantity: ${item.quantity}
-                | Price: GHS ${Number(item.price).toFixed(2)}
-            </li>
-        `;
-
-    }).join("");
-
-     emailTransporter.sendMail({
-
-        from: process.env.NED_HUB_EMAIL,
-
-        to: process.env.NED_HUB_NOTIFICATION_EMAIL,
-
-        subject:
-            `NED HUB - New Order #${orderId}`,
-
-        html: `
-
-            <div style="font-family: Arial, sans-serif;">
-
-                <h2>🛒 New NED HUB Order</h2>
-
-                <p>
-                    A new customer order has been placed.
-                </p>
-
-                <hr>
-
-                <h3>Customer Information</h3>
-
-                <p>
-                    <strong>Name:</strong>
-                    ${customer.name}
-                </p>
-
-                <p>
-                    <strong>Email:</strong>
-                    ${customer.email}
-                </p>
-
-                <p>
-                    <strong>Phone:</strong>
-                    ${customer.phone}
-                </p>
-
-                <h3>Delivery Information</h3>
-
-                <p>
-                    <strong>Address:</strong>
-                    ${delivery_address}
-                </p>
-
-                <p>
-                    <strong>City:</strong>
-                    ${city}
-                </p>
-
-                <p>
-                    <strong>Region:</strong>
-                    ${region}
-                </p>
-
-                <h3>Order Items</h3>
-
-                <ul>
-                    ${productLines}
-                </ul>
-
-                <h3>Payment Summary</h3>
-
-                <p>
-                    <strong>Subtotal:</strong>
-                    GHS ${subtotal.toFixed(2)}
-                </p>
-
-                <p>
-                    <strong>Delivery:</strong>
-                    ${
-                        deliveryFee === 0
-                            ? "FREE"
-                            : "GHS " + deliveryFee.toFixed(2)
-                    }
-                </p>
-
-                <p>
-                    <strong>Total:</strong>
-                    GHS ${total.toFixed(2)}
-                </p>
-
-                <hr>
-
-                <p>
-                    <strong>Order Number:</strong>
-                    #${orderId}
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    Pending
-                </p>
-
-            </div>
-
-        `
-
-    });
-
-    console.log(
-        `Order notification email sent for order #${orderId}`
-    );
-
-} catch (emailError) {
-
-    console.error(
-        "Order email notification failed:",
-        emailError
-    );
-
-}
-
-
 
         /* =================================
            SUCCESS
@@ -8157,55 +8059,6 @@ app.delete("/api/admin/settings/:name", async (req, res) => {
     }
 });
 
-// ========================================
-// PUBLIC WEBSITE SETTINGS
-// ========================================
-
-app.get("/api/settings", async (req, res) => {
-
-    try {
-
-        const [rows] = await db.query(
-            `
-            SELECT
-                setting_name,
-                setting_value
-            FROM settings
-            ORDER BY setting_name
-            `
-        );
-
-        const settings = {};
-
-        rows.forEach(row => {
-
-            settings[row.setting_name] =
-                row.setting_value;
-
-        });
-
-        res.json({
-            success: true,
-            settings
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Load public website settings error:",
-            error
-        );
-
-        res.status(500).json({
-            success: false,
-            message:
-                "Failed to load website settings."
-        });
-
-    }
-
-});
-
 // ==========================================
 // PUBLIC WEBSITE SETTINGS
 // ==========================================
@@ -8325,504 +8178,869 @@ app.put("/api/admin/settings", requireAdminAPI, async (req, res) => {
 });
 
 
-app.post("/api/customer-care/messages", async (req, res) => {
+
+/* =========================================
+   CUSTOMER CARE
+========================================= */
+
+
+/* =========================================
+   GET CUSTOMER CARE MESSAGES
+========================================= */
+
+app.get(
+    "/api/customer-care/messages",
+    async (req, res) => {
+
+        try {
+
+            if (!req.session.customerId) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Please login first."
+
+                });
+
+            }
+
+            const customerId =
+                req.session.customerId;
+
+
+            const [messages] = await db.query(
+
+                `SELECT
+                    id,
+                    sender_type,
+                    message,
+                    is_read,
+                    created_at
+                 FROM customer_care_messages
+                 WHERE user_id = ?
+                 ORDER BY created_at ASC`,
+
+                [customerId]
+
+            );
+
+
+            res.json({
+
+                success: true,
+
+                messages: messages
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Customer Care load error:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to load messages."
+
+            });
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   SEND CUSTOMER CARE MESSAGE
+========================================= */
+
+app.post(
+    "/api/customer-care/messages",
+    async (req, res) => {
+
+        try {
+
+            if (!req.session.customerId) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Please login first."
+
+                });
+
+            }
+
+
+            const customerId =
+                req.session.customerId;
+
+
+            const message =
+                String(
+                    req.body.message || ""
+                ).trim();
+
+
+            if (!message) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Please enter a message."
+
+                });
+
+            }
+
+
+            if (message.length > 2000) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Message is too long."
+
+                });
+
+            }
+
+
+            await db.query(
+
+                `INSERT INTO customer_care_messages
+                (
+                    user_id,
+                    sender_type,
+                    message,
+                    is_read
+                )
+                VALUES
+                (?, 'customer', ?, 0)`,
+
+                [
+                    customerId,
+                    message
+                ]
+
+            );
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "Message sent successfully."
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Customer Care send error:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to send message."
+
+            });
+
+        }
+
+    }
+);
+
+
+
+/* =========================================
+   MARK CUSTOMER CARE MESSAGES AS READ
+========================================= */
+
+app.put(
+    "/api/customer-care/read",
+    async (req, res) => {
+
+        try {
+
+            if (!req.session.customerId) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Please login first."
+
+                });
+
+            }
+
+
+            const customerId =
+                req.session.customerId;
+
+
+            await db.query(
+
+                `UPDATE customer_care_messages
+                 SET is_read = 1
+                 WHERE user_id = ?
+                 AND sender_type = 'admin'`,
+
+                [customerId]
+
+            );
+
+
+            res.json({
+
+                success: true
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Customer Care read error:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to update messages."
+
+            });
+
+        }
+
+    }
+);
+
+
+
+/* =========================================
+   SEND CUSTOMER CARE MESSAGE
+========================================= */
+
+app.post(
+    "/api/customer-care/messages",
+    async (req, res) => {
+
+        try {
+
+            if (!req.session.customerId) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Please login first."
+
+                });
+
+            }
+
+
+            const customerId =
+                req.session.customerId;
+
+
+            const message =
+                String(req.body.message || "").trim();
+
+
+            if (!message) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Please enter a message."
+
+                });
+
+            }
+
+
+            if (message.length > 2000) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Message is too long."
+
+                });
+
+            }
+
+
+            await db.query(
+
+                `INSERT INTO customer_care_messages
+                (
+                    user_id,
+                    sender_type,
+                    message,
+                    is_read
+                )
+                VALUES (?, 'customer', ?, 0)`,
+
+                [
+                    customerId,
+                    message
+                ]
+
+            );
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "Message sent successfully."
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Customer Care send error:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to send message."
+
+            });
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   MARK CUSTOMER CARE MESSAGES AS READ
+========================================= */
+
+app.put(
+    "/api/customer-care/read",
+    async (req, res) => {
+
+        try {
+
+            if (!req.session.customerId) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Please login first."
+
+                });
+
+            }
+
+
+            const customerId =
+                req.session.customerId;
+
+
+            await db.query(
+
+                `UPDATE customer_care_messages
+                 SET is_read = 1
+                 WHERE user_id = ?
+                 AND sender_type = 'admin'`,
+
+                [customerId]
+
+            );
+
+
+            res.json({
+
+                success: true
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Customer Care read error:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to update messages."
+
+            });
+
+        }
+
+    }
+);
+
+
+
+
+/* =========================================
+   CUSTOMER CARE API
+========================================= */
+
+app.get("/api/customer-care/messages", async (req, res) => {
+
     try {
+
         if (!req.session.customerId) {
+
             return res.status(401).json({
                 success: false,
                 message: "Please login first."
             });
+
         }
 
-        const message =
-            typeof req.body.message === "string"
-                ? req.body.message.trim()
-                : "";
+        const customerId = req.session.customerId;
 
-        if (!message) {
-            return res.status(400).json({
-                success: false,
-                message: "Message cannot be empty."
-            });
-        }
-
-        const [result] = await db.query(`
-            INSERT INTO customer_messages
-            (customer_id, sender_type, message, is_read)
-            VALUES (?, 'customer', ?, 0)
-        `, [
-            req.session.customerId,
-            message
-        ]);
+        const [messages] = await db.query(
+            `SELECT
+                id,
+                sender_type,
+                message,
+                is_read,
+                created_at
+             FROM customer_care_messages
+             WHERE user_id = ?
+             ORDER BY created_at ASC`,
+            [customerId]
+        );
 
         res.json({
             success: true,
-            message: "Message sent successfully.",
-            messageId: result.insertId
+            messages: messages
         });
 
     } catch (error) {
 
-        console.error("Customer message error:", error);
+        console.error(
+            "Customer Care GET error:",
+            error
+        );
 
         res.status(500).json({
             success: false,
-            message: "Failed to send message."
+            message: "Unable to load messages."
         });
+
     }
+
+});
+
+
+app.post("/api/customer-care/messages", async (req, res) => {
+
+    try {
+
+        if (!req.session.customerId) {
+
+            return res.status(401).json({
+                success: false,
+                message: "Please login first."
+            });
+
+        }
+
+        const customerId = req.session.customerId;
+
+        const message =
+            String(req.body.message || "").trim();
+
+
+        if (!message) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Please enter a message."
+            });
+
+        }
+
+
+        if (message.length > 2000) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Message is too long."
+            });
+
+        }
+
+
+        await db.query(
+            `INSERT INTO customer_care_messages
+                (user_id, sender_type, message, is_read)
+             VALUES
+                (?, 'customer', ?, 0)`,
+            [
+                customerId,
+                message
+            ]
+        );
+
+
+        res.json({
+            success: true,
+            message: "Message sent successfully."
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Customer Care POST error:",
+            error
+        );
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to send message."
+        });
+
+    }
+
+});
+
+
+app.put("/api/customer-care/read", async (req, res) => {
+
+    try {
+
+        if (!req.session.customerId) {
+
+            return res.status(401).json({
+                success: false,
+                message: "Please login first."
+            });
+
+        }
+
+        const customerId = req.session.customerId;
+
+
+        await db.query(
+            `UPDATE customer_care_messages
+             SET is_read = 1
+             WHERE user_id = ?
+             AND sender_type = 'admin'`,
+            [customerId]
+        );
+
+
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Customer Care READ error:",
+            error
+        );
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to update messages."
+        });
+
+    }
+
 });
 
 
 
 
+/* =========================================
+   ADMIN CUSTOMER CARE ROUTES
+========================================= */
 
-
-/* =========================================================
-   NED HUB - CUSTOMER CARE
-   ========================================================= */
-
-// CUSTOMER - GET MESSAGES
-app.get("/api/customer-care/messages", async (req, res) => {
+// LOAD CUSTOMER CONVERSATIONS
+app.get("/api/admin/customer-care/conversations", async (req, res) => {
     try {
-        if (!req.session.customerId) {
+        if (!req.session.admin) {
             return res.status(401).json({
                 success: false,
-                message: "Please login first."
+                message: "Admin authentication required."
             });
         }
 
-        const [messages] = await db.query(`
+        const [customers] = await db.query(`
+            SELECT
+                c.id,
+                c.name,
+                c.email,
+                c.phone,
+                MAX(m.created_at) AS last_message_at,
+                SUM(
+                    CASE
+                        WHEN m.sender_type = 'customer'
+                        AND m.is_read = 0
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS unread_count
+            FROM customers c
+            INNER JOIN customer_care_messages m
+                ON m.user_id = c.id
+            GROUP BY
+                c.id,
+                c.name,
+                c.email,
+                c.phone
+            ORDER BY last_message_at DESC
+        `);
+
+        res.json({
+            success: true,
+            customers: customers
+        });
+
+    } catch (error) {
+        console.error("Admin Customer Care conversations error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to load customer conversations."
+        });
+    }
+});
+
+
+// LOAD MESSAGES FOR ONE CUSTOMER
+app.get("/api/admin/customer-care/messages/:customerId", async (req, res) => {
+    try {
+        if (!req.session.admin) {
+            return res.status(401).json({
+                success: false,
+                message: "Admin authentication required."
+            });
+        }
+
+        const customerId = Number(req.params.customerId);
+
+        if (!Number.isInteger(customerId) || customerId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid customer ID."
+            });
+        }
+
+        const [customers] = await db.query(
+            `
+            SELECT id, name, email, phone
+            FROM customers
+            WHERE id = ?
+            `,
+            [customerId]
+        );
+
+        if (customers.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Customer not found."
+            });
+        }
+
+        const [messages] = await db.query(
+            `
             SELECT
                 id,
                 sender_type,
                 message,
                 is_read,
                 created_at
-            FROM customer_messages
-            WHERE customer_id = ?
+            FROM customer_care_messages
+            WHERE user_id = ?
             ORDER BY created_at ASC
-        `, [req.session.customerId]);
+            `,
+            [customerId]
+        );
 
         res.json({
             success: true,
-            messages
+            customer: customers[0],
+            messages: messages
         });
 
     } catch (error) {
-        console.error("Customer Care GET error:", error);
+        console.error("Admin Customer Care messages error:", error);
 
         res.status(500).json({
             success: false,
-            message: "Failed to load messages."
+            message: "Unable to load customer messages."
         });
     }
 });
 
 
-// CUSTOMER - SEND MESSAGE
-app.post("/api/customer-care/messages", async (req, res) => {
+// MARK CUSTOMER MESSAGES AS READ
+app.put("/api/admin/customer-care/read/:customerId", async (req, res) => {
     try {
-        if (!req.session.customerId) {
+        if (!req.session.admin) {
             return res.status(401).json({
                 success: false,
-                message: "Please login first."
+                message: "Admin authentication required."
             });
         }
 
-        const message =
-            typeof req.body.message === "string"
-                ? req.body.message.trim()
-                : "";
+        const customerId = Number(req.params.customerId);
+
+        if (!Number.isInteger(customerId) || customerId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid customer ID."
+            });
+        }
+
+        await db.query(
+            `
+            UPDATE customer_care_messages
+            SET is_read = 1
+            WHERE user_id = ?
+            AND sender_type = 'customer'
+            `,
+            [customerId]
+        );
+
+        res.json({
+            success: true
+        });
+
+    } catch (error) {
+        console.error("Admin Customer Care read error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to mark messages as read."
+        });
+    }
+});
+
+
+// SEND ADMIN REPLY
+app.post("/api/admin/customer-care/messages", async (req, res) => {
+    try {
+        if (!req.session.admin) {
+            return res.status(401).json({
+                success: false,
+                message: "Admin authentication required."
+            });
+        }
+
+        const customerId = Number(req.body.customerId);
+        const message = String(req.body.message || "").trim();
+
+        if (!Number.isInteger(customerId) || customerId <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid customer ID."
+            });
+        }
 
         if (!message) {
             return res.status(400).json({
                 success: false,
-                message: "Message cannot be empty."
+                message: "Please enter a message."
             });
         }
 
-        const [result] = await db.query(`
-            INSERT INTO customer_messages
-            (customer_id, sender_type, message, is_read)
-            VALUES (?, 'customer', ?, 0)
-        `, [
-            req.session.customerId,
-            message
-        ]);
+        if (message.length > 2000) {
+            return res.status(400).json({
+                success: false,
+                message: "Message is too long."
+            });
+        }
+
+        const [customers] = await db.query(
+            `
+            SELECT id
+            FROM customers
+            WHERE id = ?
+            `,
+            [customerId]
+        );
+
+        if (customers.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Customer not found."
+            });
+        }
+
+        await db.query(
+            `
+            INSERT INTO customer_care_messages
+            (
+                user_id,
+                sender_type,
+                message,
+                is_read
+            )
+            VALUES (?, 'admin', ?, 0)
+            `,
+            [customerId, message]
+        );
 
         res.json({
             success: true,
-            message: "Message sent successfully.",
-            messageId: result.insertId
+            message: "Reply sent successfully."
         });
 
     } catch (error) {
-        console.error("Customer Care SEND error:", error);
+        console.error("Admin Customer Care send error:", error);
 
         res.status(500).json({
             success: false,
-            message: "Failed to send message."
+            message: "Unable to send reply."
         });
     }
 });
-
-
-// CUSTOMER - MARK ADMIN MESSAGES AS READ
-app.put("/api/customer-care/read", async (req, res) => {
-    try {
-        if (!req.session.customerId) {
-            return res.status(401).json({
-                success: false,
-                message: "Please login first."
-            });
-        }
-
-        await db.query(`
-            UPDATE customer_messages
-            SET is_read = 1
-            WHERE customer_id = ?
-            AND sender_type = 'admin'
-        `, [req.session.customerId]);
-
-        res.json({
-            success: true,
-            message: "Messages marked as read."
-        });
-
-    } catch (error) {
-        console.error("Customer Care READ error:", error);
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to mark messages as read."
-        });
-    }
-});
-
-
-// ADMIN - GET CUSTOMER CONVERSATIONS
-app.get(
-    "/api/admin/customer-care/conversations",
-    requireAdminAPI,
-    async (req, res) => {
-        try {
-
-            const [customers] = await db.query(`
-                SELECT
-                    c.id,
-                    c.name,
-                    c.email,
-                    c.phone,
-                    MAX(m.created_at) AS last_message_at,
-                    SUM(
-                        CASE
-                            WHEN m.sender_type = 'customer'
-                            AND m.is_read = 0
-                            THEN 1
-                            ELSE 0
-                        END
-                    ) AS unread_count
-                FROM customers c
-                INNER JOIN customer_messages m
-                    ON c.id = m.customer_id
-                GROUP BY
-                    c.id,
-                    c.name,
-                    c.email,
-                    c.phone
-                ORDER BY last_message_at DESC
-            `);
-
-            res.json({
-                success: true,
-                customers
-            });
-
-        } catch (error) {
-            console.error("Customer Care conversations error:", error);
-
-            res.status(500).json({
-                success: false,
-                message: "Failed to load conversations."
-            });
-        }
-    }
-);
-
-
-// ADMIN - GET ONE CUSTOMER'S MESSAGES
-app.get(
-    "/api/admin/customer-care/messages/:customerId",
-    requireAdminAPI,
-    async (req, res) => {
-        try {
-
-            const customerId = Number(req.params.customerId);
-
-            if (!Number.isInteger(customerId) || customerId <= 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Invalid customer ID."
-                });
-            }
-
-            const [customers] = await db.query(`
-                SELECT
-                    id,
-                    name,
-                    email,
-                    phone
-                FROM customers
-                WHERE id = ?
-                LIMIT 1
-            `, [customerId]);
-
-            if (!customers.length) {
-                return res.status(404).json({
-                    success: false,
-                    message: "Customer not found."
-                });
-            }
-
-            const [messages] = await db.query(`
-                SELECT
-                    id,
-                    sender_type,
-                    message,
-                    is_read,
-                    created_at
-                FROM customer_messages
-                WHERE customer_id = ?
-                ORDER BY created_at ASC
-            `, [customerId]);
-
-            res.json({
-                success: true,
-                customer: customers[0],
-                messages
-            });
-
-        } catch (error) {
-            console.error("Customer Care admin messages error:", error);
-
-            res.status(500).json({
-                success: false,
-                message: "Failed to load customer messages."
-            });
-        }
-    }
-);
-
-
-// ADMIN - SEND REPLY
-app.post(
-    "/api/admin/customer-care/messages",
-    requireAdminAPI,
-    async (req, res) => {
-        try {
-
-            const customerId = Number(req.body.customerId);
-
-            const message =
-                typeof req.body.message === "string"
-                    ? req.body.message.trim()
-                    : "";
-
-            if (!Number.isInteger(customerId) || customerId <= 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Invalid customer ID."
-                });
-            }
-
-            if (!message) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Message cannot be empty."
-                });
-            }
-
-            const [customers] = await db.query(`
-                SELECT id
-                FROM customers
-                WHERE id = ?
-                LIMIT 1
-            `, [customerId]);
-
-            if (!customers.length) {
-                return res.status(404).json({
-                    success: false,
-                    message: "Customer not found."
-                });
-            }
-
-            const [result] = await db.query(`
-                INSERT INTO customer_messages
-                (customer_id, sender_type, message, is_read)
-                VALUES (?, 'admin', ?, 0)
-            `, [customerId, message]);
-
-            res.json({
-                success: true,
-                message: "Reply sent successfully.",
-                messageId: result.insertId
-            });
-
-        } catch (error) {
-            console.error("Customer Care admin reply error:", error);
-
-            res.status(500).json({
-                success: false,
-                message: "Failed to send reply."
-            });
-        }
-    }
-);
-
-
-// ADMIN - MARK CUSTOMER MESSAGES AS READ
-app.put(
-    "/api/admin/customer-care/read/:customerId",
-    requireAdminAPI,
-    async (req, res) => {
-        try {
-
-            const customerId = Number(req.params.customerId);
-
-            if (!Number.isInteger(customerId) || customerId <= 0) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Invalid customer ID."
-                });
-            }
-
-            await db.query(`
-                UPDATE customer_messages
-                SET is_read = 1
-                WHERE customer_id = ?
-                AND sender_type = 'customer'
-            `, [customerId]);
-
-            res.json({
-                success: true,
-                message: "Messages marked as read."
-            });
-
-        } catch (error) {
-            console.error("Customer Care admin read error:", error);
-
-            res.status(500).json({
-                success: false,
-                message: "Failed to mark messages as read."
-            });
-        }
-    }
-);
-
-
-
-
-
-
-// ADMIN - CUSTOMER CARE UNREAD COUNT
-app.get(
-    "/api/admin/customer-care/unread-count",
-    requireAdminAPI,
-    async (req, res) => {
-        try {
-            const [rows] = await db.query(`
-                SELECT COUNT(*) AS unread_count
-                FROM customer_messages
-                WHERE sender_type = 'customer'
-                AND is_read = 0
-            `);
-
-            res.json({
-                success: true,
-                unread_count: Number(rows[0].unread_count || 0)
-            });
-
-        } catch (error) {
-            console.error(
-                "Customer Care unread count error:",
-                error
-            );
-
-            res.status(500).json({
-                success: false,
-                message: "Failed to get unread count."
-            });
-        }
-    }
-);
-
-
-
-
-// ADMIN - ORDER NOTIFICATION COUNT
-app.get(
-    "/api/admin/orders/notification-count",
-    requireAdminAPI,
-    async (req, res) => {
-        try {
-            const [rows] = await db.query(`
-                SELECT
-                    COUNT(*) AS pending_orders
-                FROM orders
-                WHERE status = 'Pending'
-            `);
-
-            res.json({
-                success: true,
-                pending_orders: Number(
-                    rows[0].pending_orders || 0
-                )
-            });
-
-        } catch (error) {
-
-            console.error(
-                "Order notification error:",
-                error
-            );
-
-            res.status(500).json({
-                success: false,
-                message: "Failed to get order count."
-            });
-        }
-    }
-);
-
-
-
-app.get(
-    "/api/admin/orders/notification-count",
-    requireAdminAPI,
-    async (req, res) => {
-        try {
-            const [rows] = await db.query(`
-                SELECT COUNT(*) AS pending_orders
-                FROM orders
-                WHERE status = 'Pending'
-            `);
-
-            res.json({
-                success: true,
-                pending_orders: Number(rows[0].pending_orders || 0)
-            });
-
-        } catch (error) {
-            console.error("Order notification error:", error);
-
-            res.status(500).json({
-                success: false,
-                message: "Failed to get order count."
-            });
-        }
-    }
-);
-
 
 
 

@@ -1506,6 +1506,192 @@ footer h3 {
 
 }
 
+/* =========================================================
+   NED HUB MOVING BACKGROUND
+========================================================= */
+
+body {
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Moving colour background */
+
+body::before {
+    content: "";
+    position: fixed;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    z-index: 0;
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at 20% 30%, var(--ned-gradient-1), transparent 35%),
+        radial-gradient(circle at 80% 25%, var(--ned-gradient-2), transparent 35%),
+        radial-gradient(circle at 50% 80%, var(--ned-gradient-3), transparent 40%);
+
+    background-size: 180% 180%, 160% 160%, 170% 170%;
+
+    opacity: 0.22;
+
+    animation: nedBackgroundMove var(--ned-gradient-speed) ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   BACKGROUND COLOUR MOVEMENT
+========================================================= */
+
+@keyframes nedBackgroundMove {
+
+    0% {
+        transform:
+            translate3d(-3%, -2%, 0)
+            scale(1);
+    }
+
+    25% {
+        transform:
+            translate3d(3%, -4%, 0)
+            scale(1.04);
+    }
+
+    50% {
+        transform:
+            translate3d(5%, 3%, 0)
+            scale(1.08);
+    }
+
+    75% {
+        transform:
+            translate3d(-4%, 5%, 0)
+            scale(1.04);
+    }
+
+    100% {
+        transform:
+            translate3d(-2%, -3%, 0)
+            scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   SUBTLE BACKGROUND SHAKE
+========================================================= */
+
+body.ned-background-shake::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: -10px;
+
+    z-index: -1;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--ned-gradient-1),
+            var(--ned-gradient-2),
+            var(--ned-gradient-3)
+        );
+
+    opacity: 0.08;
+
+    animation:
+        nedBackgroundShake
+        5s
+        ease-in-out
+        infinite;
+
+}
+
+
+@keyframes nedBackgroundShake {
+
+    0%,
+    100% {
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
+
+    20% {
+        transform:
+            translate(3px, -2px)
+            scale(1.01);
+    }
+
+    40% {
+        transform:
+            translate(-3px, 2px)
+            scale(1.015);
+    }
+
+    60% {
+        transform:
+            translate(2px, 3px)
+            scale(1.01);
+    }
+
+    80% {
+        transform:
+            translate(-2px, -3px)
+            scale(1.015);
+    }
+
+}
+
+
+/* =========================================================
+   KEEP CONTENT ABOVE THE MOVING BACKGROUND
+========================================================= */
+
+header,
+.banner-section,
+.section,
+.default-hero,
+.website-sections,
+footer {
+
+    position: relative;
+
+}
+
+
+/* =========================================================
+   DARK THEME BACKGROUND
+========================================================= */
+
+[data-theme="dark"] body::before {
+
+    opacity: 0.30;
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    body::before,
+    body.ned-background-shake::after {
+
+        animation: none;
+
+    }
+
+}
+
+
 </style>
 
 </head>
@@ -1615,9 +1801,10 @@ footer h3 {
 >
 
     <h1>
-        Welcome to NED HUB
-    </h1>
+    Welcome to <span data-store-name>NED HUB</span>
+</h1>
 
+   
     <p>
         Your trusted online shop for electronics,
         computers, accessories and more.
@@ -1769,13 +1956,15 @@ footer h3 {
 
     </div>
 
-
-    <p style="margin-top:15px;">
-        © 2026 NED HUB. All rights reserved.
-    </p>
+<p style="margin-top:15px;">
+    © 2026 <span data-store-name>NED HUB</span>. All rights reserved.
+</p>
+    
 
 </footer>
 
+
+<script src="/js/site-settings.js"></script>
 
 <script>
 
@@ -3987,17 +4176,21 @@ function applyWebsiteTheme(
     );
 
 
+    document.body.classList.toggle(
+    "ned-background-shake",
+    settingIsTrue(
+        settings.gradient_animation
+    )
+);
+
     /* =====================================================
        ANIMATED HEADER
     ===================================================== */
-
-    document.body.classList.toggle(
-        "ned-animated-header",
-        settingIsTrue(
-            settings.animated_header
-        )
-    );
-
+    if (settingIsTrue(settings.gradient_animation)) {
+    document.body.classList.add("ned-background-shake");
+} else {
+    document.body.classList.remove("ned-background-shake");
+}
 
     /* =====================================================
        GRADIENT ANIMATION
@@ -4034,9 +4227,10 @@ function applyStoreInformation(
 ) {
 
     const storeName =
-        settings.header_store_name ||
-        settings.store_name ||
-        "NED HUB";
+    settings.store_name ||
+    settings.header_store_name ||
+    "NED HUB";
+    
 
 
     document
@@ -4585,7 +4779,7 @@ initializeNEDHub();
      SITE SETTINGS SCRIPT
 ========================================================= -->
 
-<script src="/js/site-settings.js"></script>
+
 
 
 </body>

@@ -251,206 +251,425 @@
 </div>
 
 <script>
-    const messagesBox = document.getElementById("messages");
-    const messageInput = document.getElementById("messageInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const statusBox = document.getElementById("status");
+const messagesBox = document.getElementById("messages");
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+const statusBox = document.getElementById("status");
 
-    let loading = false;
+let loading = false;
 
-    function escapeHTML(text) {
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML;
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+
+/* =========================================
+   FORMAT TIME
+========================================= */
+
+function formatTime(dateString) {
+
+    const date = new Date(dateString);
+
+    if (isNaN(date.getTime())) {
+        return "";
     }
 
-    function formatTime(dateString) {
-        const date = new Date(dateString);
+    return date.toLocaleString([], {
+        dateStyle: "short",
+        timeStyle: "short"
+    });
+}
 
-        if (isNaN(date.getTime())) {
-            return "";
+
+/* =========================================
+   LOAD MESSAGES
+========================================= */
+
+async function loadMessages() {
+
+    try {
+
+        const response = await fetch(
+            "/api/customer-care/messages",
+            {
+                credentials: "include"
+            }
+        );
+
+        const data = await response.json();
+
+
+        if (response.status === 401) {
+
+            messagesBox.innerHTML = `
+                <div class="login-message">
+
+                    <h3>Please login first</h3>
+
+                    <p>
+                        You need a NED HUB customer account
+                        to use Customer Care.
+                    </p>
+
+                    <a href="/login.html">
+                        Login
+                    </a>
+
+                </div>
+            `;
+
+            messageInput.disabled = true;
+            sendBtn.disabled = true;
+
+            return;
         }
 
-        return date.toLocaleString([], {
-            dateStyle: "short",
-            timeStyle: "short"
-        });
-    }
 
-    async function loadMessages() {
-        try {
-            const response = await fetch("/api/customer-care/messages", {
-                credentials: "include"
-            });
+        if (!data.success) {
 
-            const data = await response.json();
+            messagesBox.innerHTML = `
+                <div class="empty">
+                    Unable to load messages.
+                </div>
+            `;
 
-            if (response.status === 401) {
-                messagesBox.innerHTML = `
-                    <div class="login-message">
-                        <h3>Please login first</h3>
-                        <p>You need a NED HUB customer account to use Customer Care.</p>
-                        <a href="/login.html">Login</a>
-                    </div>
-                `;
+            return;
+        }
 
-                messageInput.disabled = true;
-                sendBtn.disabled = true;
-                return;
-            }
 
-            if (!data.success) {
-                messagesBox.innerHTML = `
-                    <div class="empty">
-                        Unable to load messages.
-                    </div>
-                `;
-                return;
-            }
+        displayMessages(data.messages || []);
 
-            displayMessages(data.messages || []);
 
-            // Mark admin messages as read
-            await fetch("/api/customer-care/read", {
+        /* Mark admin messages as read */
+
+        await fetch(
+            "/api/customer-care/read",
+            {
                 method: "PUT",
                 credentials: "include"
-            });
+            }
+        );
 
-        } catch (error) {
-            console.error(error);
 
-            messagesBox.innerHTML = `
-                <div class="empty">
-                    Unable to connect to NED HUB.
-                </div>
-            `;
-        }
+    } catch (error) {
+
+        console.error(
+            "LOAD CUSTOMER CARE ERROR:",
+            error
+        );
+
+        messagesBox.innerHTML = `
+            <div class="empty">
+                Unable to connect to NED HUB.
+            </div>
+        `;
+    }
+}
+
+
+/* =========================================
+   DISPLAY MESSAGES
+========================================= */
+
+function displayMessages(messages) {
+
+    if (!messages.length) {
+
+        messagesBox.innerHTML = `
+            <div class="empty">
+
+                <h3>No messages yet</h3>
+
+                <p>
+                    Send a message to contact
+                    NED HUB Customer Care.
+                </p>
+
+            </div>
+        `;
+
+        return;
     }
 
-    function displayMessages(messages) {
 
-        if (!messages.length) {
-            messagesBox.innerHTML = `
-                <div class="empty">
-                    <h3>No messages yet</h3>
-                    <p>Send a message to contact NED HUB Customer Care.</p>
-                </div>
-            `;
-            return;
-        }
+    messagesBox.innerHTML = "";
 
-        messagesBox.innerHTML = "";
 
-        messages.forEach(message => {
+    messages.forEach(message => {
 
-            const wrapper = document.createElement("div");
+        const wrapper =
+            document.createElement("div");
 
-            wrapper.className =
-                "message " +
-                (message.sender_type === "customer"
-                    ? "customer"
-                    : "admin");
 
-            const sender =
+        wrapper.className =
+            "message " +
+            (
                 message.sender_type === "customer"
-                    ? "You"
-                    : "NED HUB Admin";
-
-            wrapper.innerHTML = `
-                <div class="bubble">
-                    <div class="sender">${sender}</div>
-
-                    <div>
-                        ${escapeHTML(message.message)}
-                    </div>
-
-                    <div class="time">
-                        ${formatTime(message.created_at)}
-                    </div>
-                </div>
-            `;
-
-            messagesBox.appendChild(wrapper);
-        });
-
-        messagesBox.scrollTop = messagesBox.scrollHeight;
-    }
-
-    async function sendMessage() {
-
-        const message = messageInput.value.trim();
-
-        if (!message || loading) {
-            return;
-        }
-
-        loading = true;
-        sendBtn.disabled = true;
-        statusBox.textContent = "Sending...";
-
-        try {
-
-            const response = await fetch(
-                "/api/customer-care/messages",
-                {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        message: message
-                    })
-                }
+                    ? "customer"
+                    : "admin"
             );
 
-            const data = await response.json();
 
-            if (response.status === 401) {
-                alert("Please login first.");
-                window.location.href = "/login.html";
-                return;
-            }
+        const sender =
+            message.sender_type === "customer"
+                ? "You"
+                : "NED HUB Admin";
 
-            if (!data.success) {
-                alert(data.message || "Unable to send message.");
-                return;
-            }
 
-            messageInput.value = "";
-            statusBox.textContent = "";
+        wrapper.innerHTML = `
 
-            await loadMessages();
+            <div class="bubble">
 
-        } catch (error) {
+                <div class="sender">
+                    ${sender}
+                </div>
 
-            console.error(error);
-            alert("Unable to send message. Please try again.");
+                <div>
+                    ${escapeHTML(message.message)}
+                </div>
 
-        } finally {
+                <div class="time">
+                    ${formatTime(message.created_at)}
+                </div>
 
-            loading = false;
-            sendBtn.disabled = false;
-        }
-    }
+            </div>
 
-    sendBtn.addEventListener("click", sendMessage);
+        `;
 
-    messageInput.addEventListener("keydown", function(event) {
 
-        if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            sendMessage();
-        }
+        messagesBox.appendChild(wrapper);
 
     });
 
-    // Initial load
-    loadMessages();
 
-    // Check for new admin messages every 5 seconds
-    setInterval(loadMessages, 5000);
+    messagesBox.scrollTop =
+        messagesBox.scrollHeight;
+}
+
+
+/* =========================================
+   SEND MESSAGE
+========================================= */
+
+async function sendMessage() {
+
+    console.log("SEND BUTTON CLICKED");
+
+
+    const message =
+        messageInput.value.trim();
+
+
+    if (!message) {
+
+        alert(
+            "Please type a message first."
+        );
+
+        return;
+    }
+
+
+    if (loading) {
+        return;
+    }
+
+
+    loading = true;
+
+    sendBtn.disabled = true;
+
+    statusBox.textContent =
+        "Sending...";
+
+
+    try {
+
+        console.log(
+            "Sending message to server..."
+        );
+
+
+        const response = await fetch(
+            "/api/customer-care/messages",
+            {
+                method: "POST",
+
+                credentials: "include",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    message: message
+                })
+            }
+        );
+
+
+        console.log(
+            "Server status:",
+            response.status
+        );
+
+
+        const text =
+            await response.text();
+
+
+        console.log(
+            "Server response:",
+            text
+        );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(text);
+
+        } catch (error) {
+
+            alert(
+                "The server returned an invalid response:\n\n" +
+                text
+            );
+
+            return;
+        }
+
+
+        if (response.status === 401) {
+
+            alert(
+                "Please login first."
+            );
+
+            window.location.href =
+                "/login.html";
+
+            return;
+        }
+
+
+        if (!response.ok || !data.success) {
+
+            alert(
+                data.message ||
+                "Unable to send message."
+            );
+
+            return;
+        }
+
+
+        /* Message successfully sent */
+
+        messageInput.value = "";
+
+        statusBox.textContent =
+            "Message sent successfully.";
+
+
+        await loadMessages();
+
+
+        setTimeout(() => {
+
+            statusBox.textContent = "";
+
+        }, 3000);
+
+
+    } catch (error) {
+
+        console.error(
+            "SEND MESSAGE ERROR:",
+            error
+        );
+
+
+        alert(
+            "Connection error:\n\n" +
+            error.message
+        );
+
+
+    } finally {
+
+        loading = false;
+
+        sendBtn.disabled = false;
+    }
+}
+
+
+/* =========================================
+   SEND BUTTON
+========================================= */
+
+sendBtn.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+/* =========================================
+   ENTER KEY
+========================================= */
+
+messageInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+        }
+
+    }
+);
+
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+loadMessages();
+
+
+/* =========================================
+   CHECK FOR NEW MESSAGES
+========================================= */
+
+setInterval(
+    loadMessages,
+    5000
+);
+
 </script>
+
 
 </body>
 </html>
