@@ -1599,35 +1599,46 @@ a,
 
 /* =====================================================
    NED HUB - PHONE VIEW
-   KEEP DESKTOP/LAPTOP DESIGN AND SCALE IT DOWN
+   LEFT SIDEBAR + RIGHT MAIN CONTENT
 ===================================================== */
 
-@media (max-width: 700px) {
+@media (max-width:700px) {
 
     html,
     body {
         margin: 0;
         padding: 0;
-        width: 100%;
         min-width: 0;
-        overflow-x: hidden;
+        width: 100%;
+        overflow-x: auto;
     }
 
     body {
         zoom: 0.45;
     }
 
+    /* ==========================================
+       ADMIN LAYOUT
+    ========================================== */
+
     .admin-layout {
         display: flex;
-        width: 222.22%;
+        flex-direction: row;
+        width: 100%;
         min-width: 1000px;
         min-height: 100vh;
+        position: relative;
     }
 
-    /* KEEP DESKTOP SIDEBAR */
+    /* ==========================================
+       SIDEBAR - LEFT
+    ========================================== */
+
     .sidebar {
         position: fixed;
+
         left: 0;
+        right: auto;
         top: 0;
         bottom: 0;
 
@@ -1637,19 +1648,32 @@ a,
         padding: 25px 15px;
 
         overflow-y: auto;
+        overflow-x: hidden;
+
         z-index: 1000;
     }
 
-    /* KEEP DESKTOP MAIN CONTENT */
+    /* ==========================================
+       MAIN CONTENT - RIGHT OF SIDEBAR
+    ========================================== */
+
     .main,
     .main-content {
+        position: relative;
+
         margin-left: 250px;
+        margin-right: 0;
+
         width: calc(100% - 250px);
         min-width: 750px;
+
         padding: 30px;
     }
 
-    /* KEEP DESKTOP TOPBAR */
+    /* ==========================================
+       TOPBAR
+    ========================================== */
+
     .topbar {
         display: flex;
         flex-direction: row;
@@ -1657,7 +1681,10 @@ a,
         justify-content: space-between;
     }
 
-    /* KEEP DESKTOP FORM GRID */
+    /* ==========================================
+       FORMS
+    ========================================== */
+
     .form-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1666,7 +1693,10 @@ a,
         grid-column: 1 / -1;
     }
 
-    /* KEEP DESKTOP NAVIGATION */
+    /* ==========================================
+       SIDEBAR NAVIGATION
+    ========================================== */
+
     .sidebar nav {
         display: block;
     }
@@ -1675,7 +1705,10 @@ a,
         display: block;
     }
 
-    /* KEEP THEME GRID */
+    /* ==========================================
+       THEME CONTROLS
+    ========================================== */
+
     .theme-controls-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
