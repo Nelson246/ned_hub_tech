@@ -231,7 +231,7 @@ createCustomerCareTable();
 
 
 /* =========================================
-   GMAIL / NODEMAILER
+   GMAIL SMTP
 ========================================= */
 
 const transporter =
@@ -239,11 +239,9 @@ const transporter =
 
         host: "smtp.gmail.com",
 
-        port: 587,
+        port: 465,
 
-        secure: false,
-
-        requireTLS: true,
+        secure: true,
 
         auth: {
 
@@ -260,7 +258,6 @@ const transporter =
         socketTimeout: 30000
 
     });
-
 
 /* =========================================
    TEST SMTP
