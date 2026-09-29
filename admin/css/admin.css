@@ -125,7 +125,7 @@ body {
     font-weight: 500;
 
     transition:
-    background 0.2s ease,
+background 0.2s ease,
     color 0.2s ease,
     transform 0.2s ease;
    
@@ -772,57 +772,6 @@ body {
 }
 
 
-@media (max-width: 700px) {
-
-    .admin-layout {
-        display: block;
-    }
-
-    .sidebar {
-        position: relative;
-
-        width: 100%;
-        min-width: 100%;
-
-        min-height: auto;
-    }
-
-    .main-content {
-        margin-left: 0;
-
-        width: 100%;
-
-        padding: 18px;
-    }
-
-    .sidebar nav {
-        display: grid;
-
-        grid-template-columns:
-            repeat(2, 1fr);
-
-        gap: 5px;
-    }
-
-    .sidebar nav::before {
-        grid-column: 1 / -1;
-    }
-
-    .topbar {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .form-group.full-width {
-        grid-column: auto;
-    }
-
-}
 
 /* ==========================================
    CATEGORY PAGE
@@ -1597,7 +1546,7 @@ a,
     border-radius: 8px;
     margin-bottom: 5px;
     transition:
-        background 0.2s ease,
+       background 0.2s ease,
         color 0.2s ease,
         transform 0.2s ease;
     font-size: 14px;
@@ -1649,22 +1598,33 @@ a,
 
 
 /* =====================================================
-   MOBILE - KEEP LAPTOP / DESKTOP LAYOUT
+   NED HUB - PHONE VIEW
+   KEEP DESKTOP/LAPTOP DESIGN AND SCALE IT DOWN
 ===================================================== */
 
 @media (max-width: 700px) {
 
     html,
     body {
-        min-width: 1000px;
-        overflow-x: auto;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+    }
+
+    body {
+        zoom: 0.45;
     }
 
     .admin-layout {
         display: flex;
+        width: 222.22%;
         min-width: 1000px;
+        min-height: 100vh;
     }
 
+    /* KEEP DESKTOP SIDEBAR */
     .sidebar {
         position: fixed;
         left: 0;
@@ -1677,32 +1637,56 @@ a,
         padding: 25px 15px;
 
         overflow-y: auto;
+        z-index: 1000;
     }
 
+    /* KEEP DESKTOP MAIN CONTENT */
     .main,
     .main-content {
         margin-left: 250px;
         width: calc(100% - 250px);
         min-width: 750px;
-        padding: 25px;
+        padding: 30px;
     }
 
-    .logo {
-        font-size: 26px;
-        margin-bottom: 30px;
+    /* KEEP DESKTOP TOPBAR */
+    .topbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
 
-    .nav-title {
-        font-size: 11px;
+    /* KEEP DESKTOP FORM GRID */
+    .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .nav-link {
-        padding: 12px 14px;
-        font-size: 14px;
+    .form-group.full-width {
+        grid-column: 1 / -1;
     }
 
-    .admin-logout-btn {
-        padding: 12px 14px;
-        font-size: 14px;
+    /* KEEP DESKTOP NAVIGATION */
+    .sidebar nav {
+        display: block;
+    }
+
+    .sidebar nav::before {
+        display: block;
+    }
+
+    /* KEEP THEME GRID */
+    .theme-controls-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .theme-manager-header {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .theme-actions {
+        flex-wrap: nowrap;
+        justify-content: flex-end;
     }
 }
