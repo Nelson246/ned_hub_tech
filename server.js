@@ -131,6 +131,8 @@ const db = mysql.createPool({
 
     host: process.env.DB_HOST,
 
+    port: Number(process.env.DB_PORT || 3306),
+
     user: process.env.DB_USER,
 
     password: process.env.DB_PASSWORD || "",
@@ -141,7 +143,11 @@ const db = mysql.createPool({
 
     connectionLimit: 10,
 
-    queueLimit: 0
+    queueLimit: 0,
+
+    ssl: {
+        rejectUnauthorized: false
+    }
 
 });
 
@@ -186,6 +192,7 @@ async function testDatabase() {
 }
 
 testDatabase();
+
 
 /* =========================================
    CUSTOMER CARE TABLE
