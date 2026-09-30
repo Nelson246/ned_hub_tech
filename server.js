@@ -2467,11 +2467,11 @@ app.delete(
             });
 
         } catch (error) {
-
-            console.error(
-                "Delete product error:",
-                error
-            );
+                    console.error(
+    "Delete product error:",
+    error.sqlMessage || error.message || error
+);
+           
 
             res.status(500).json({
 
