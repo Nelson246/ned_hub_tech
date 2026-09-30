@@ -1367,7 +1367,6 @@ footer h3 {
 
 }
 
-
 /* =========================================================
    MOBILE
 ========================================================= */
@@ -1375,133 +1374,130 @@ footer h3 {
 @media (max-width: 700px) {
 
     header {
-
         flex-wrap: wrap;
-
     }
 
     .search-box {
-
         order: 3;
-
         width: 100%;
-
         max-width: none;
-
     }
 
     .banner-slide {
-
         height: 330px;
-
     }
 
     .banner-overlay {
-
         padding: 30px 7%;
-
     }
 
     .banner-content h1 {
-
         font-size: 30px;
-
     }
 
     .banner-content p {
-
         font-size: 15px;
-
     }
 
     .banner-arrow {
-
         width: 38px;
-
         height: 38px;
-
         font-size: 20px;
-
     }
 
     .default-hero h1 {
-
         font-size: 30px;
-
     }
 
     .default-hero {
-
         padding: 45px 20px;
-
     }
 
+    /* =========================
+       PRODUCTS ON PHONE
+    ========================= */
+
     .products-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        width: 100%;
+    }
 
-        grid-template-columns:
-            repeat(2, 1fr);
-
-        gap: 12px;
-
+    .product-card {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
     }
 
     .product-image {
-
+        width: 100%;
         height: 160px;
-
+        object-fit: contain;
     }
 
     .product-name {
-
         font-size: 14px;
-
+        line-height: 1.3;
     }
 
     .product-price {
-
         font-size: 17px;
-
     }
 
     .header-links {
-
         gap: 8px;
-
     }
 
     .website-content-inner,
     .website-content-inner.reverse {
-
         flex-direction: column;
-
     }
 
     .website-content-text h2 {
-
         font-size: 30px;
-
     }
 
     .website-content-image {
-
         width: 100%;
-
     }
 
 }
 
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
 @media (max-width: 420px) {
 
     .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
 
-        grid-template-columns: 1fr;
+    .product-card {
+        width: 100%;
+        min-width: 0;
+    }
 
+    .product-image {
+        width: 100%;
+        height: 140px;
+        object-fit: contain;
+    }
+
+    .product-name {
+        font-size: 13px;
+        line-height: 1.25;
+    }
+
+    .product-price {
+        font-size: 15px;
     }
 
     .banner-slide {
-
         height: 300px;
-
     }
 
 }

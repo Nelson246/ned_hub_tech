@@ -533,56 +533,83 @@
             flex-wrap: wrap;
         }
 
-        @media (max-width: 800px) {
+       /* =====================================================
+   PRODUCTS PAGE - PHONE VIEW
+   SIDEBAR LEFT + PRODUCTS RIGHT
+   NO OVERLAPPING
+===================================================== */
 
-            .sidebar {
-                width: 210px;
-            }
+@media (max-width: 700px) {
 
-            .main-content {
-                padding: 20px;
-            }
+    .admin-layout {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        width: max-content;
+        min-width: 1000px;
+        min-height: 100vh;
+    }
 
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
+    .sidebar {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
 
-            .form-group.full,
-            .photos-section {
-                grid-column: auto;
-            }
+        width: 250px;
+        min-width: 250px;
+        flex: 0 0 250px;
 
-        }
+        min-height: 100vh;
+        height: auto;
+    }
 
-        @media (max-width: 600px) {
+    .main-content {
+        position: relative;
 
-            .admin-layout {
-                display: block;
-            }
+        margin-left: 0;
+        margin-right: 0;
 
-            .sidebar {
-                width: 100%;
-            }
+        width: 750px;
+        min-width: 750px;
+        flex: 0 0 750px;
 
-            .page-header {
-                align-items: flex-start;
-                flex-direction: column;
-            }
+        padding: 30px;
+        min-height: 100vh;
 
-            .main-content {
-                padding: 15px;
-            }
+        overflow-x: visible;
+    }
 
-            .modal {
-                padding: 10px;
-            }
+    .page-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
 
-            .form-body {
-                padding: 16px;
-            }
+    .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-        }
+    .form-group.full,
+    .photos-section {
+        grid-column: 1 / -1;
+    }
 
+    .modal {
+        padding: 20px;
+    }
+
+    .form-body {
+        padding: 24px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}
     </style>
 </head>
 

@@ -26,8 +26,12 @@ body {
 
 .admin-layout {
     display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    width: max-content;
+    min-width: 1000px;
     min-height: 100vh;
-    width: 100%;
 }
 
 
@@ -1599,7 +1603,8 @@ a,
 
 /* =====================================================
    NED HUB - PHONE VIEW
-   LEFT SIDEBAR + RIGHT MAIN CONTENT
+   SIDEBAR LEFT + MAIN CONTENT RIGHT
+   NO OVERLAPPING
 ===================================================== */
 
 @media (max-width:700px) {
@@ -1608,8 +1613,8 @@ a,
     body {
         margin: 0;
         padding: 0;
-        min-width: 0;
         width: 100%;
+        min-width: 0;
         overflow-x: auto;
     }
 
@@ -1624,26 +1629,34 @@ a,
     .admin-layout {
         display: flex;
         flex-direction: row;
-        width: 100%;
+        align-items: stretch;
+
+        width: max-content;
         min-width: 1000px;
+
         min-height: 100vh;
-        position: relative;
     }
 
     /* ==========================================
-       SIDEBAR - LEFT
+       SIDEBAR
+       LEFT SIDE
     ========================================== */
 
     .sidebar {
-        position: fixed;
+        position: relative;
 
-        left: 0;
+        left: auto;
         right: auto;
-        top: 0;
-        bottom: 0;
+        top: auto;
+        bottom: auto;
 
         width: 250px;
         min-width: 250px;
+
+        flex: 0 0 250px;
+
+        min-height: 100vh;
+        height: auto;
 
         padding: 25px 15px;
 
@@ -1654,24 +1667,29 @@ a,
     }
 
     /* ==========================================
-       MAIN CONTENT - RIGHT OF SIDEBAR
+       MAIN CONTENT
+       STARTS EXACTLY AFTER SIDEBAR
     ========================================== */
 
     .main,
     .main-content {
         position: relative;
 
-        margin-left: 250px;
+        margin-left: 0;
         margin-right: 0;
 
-        width: calc(100% - 250px);
+        width: 750px;
         min-width: 750px;
+
+        flex: 0 0 750px;
+
+        min-height: 100vh;
 
         padding: 30px;
     }
 
     /* ==========================================
-       TOPBAR
+       TOP BAR
     ========================================== */
 
     .topbar {
@@ -1679,14 +1697,16 @@ a,
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        gap: 20px;
     }
 
     /* ==========================================
-       FORMS
+       FORM GRID
     ========================================== */
 
     .form-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
     .form-group.full-width {
@@ -1710,7 +1730,8 @@ a,
     ========================================== */
 
     .theme-controls-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
     }
 
     .theme-manager-header {
