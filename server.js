@@ -1757,71 +1757,60 @@ app.post(
 
 
 
-
-
 /* =========================================================
-   UPLOAD SINGLE PRODUCT IMAGE
-   Used for the main product image
-   ========================================================= */
+UPLOAD SINGLE PRODUCT IMAGE
+Uses Cloudinary for permanent image hosting
+========================================================= */
 
 app.post(
-    "/api/products/upload-image",
-    upload.single("image"),
-    (req, res) => {
+"/api/products/upload-image",
+(req, res, next) => {
+upload.single("image")(req, res, (error) => {
+if (error) {
+console.error("Cloudinary image upload error:", error);
 
-        try {
-
-            if (!req.file) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "No image uploaded."
-
-                });
-
-            }
-
-
-            const imageUrl =
-                "/uploads/" +
-                req.file.filename;
-
-
-            res.json({
-
-                success: true,
-
-                message:
-                    "Image uploaded successfully.",
-
-                imageUrl:
-                    imageUrl
-
-            });
-
-        } catch (error) {
-
-            console.error(
-                "Image upload error:",
-                error
-            );
-
-            res.status(500).json({
-
+            return res.status(500).json({
                 success: false,
-
-                message:
-                    "Image upload failed."
-
+                message: error.message || "Image upload failed."
             });
-
         }
 
+        next();
+    });
+},
+(req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "No image uploaded."
+            });
+        }
+
+        // Cloudinary provides the hosted image URL here.
+        const imageUrl = req.file.path;
+
+        console.log("Cloudinary image uploaded:", imageUrl);
+
+        return res.status(200).json({
+            success: true,
+            message: "Image uploaded successfully.",
+            imageUrl: imageUrl
+        });
+
+    } catch (error) {
+        console.error("Image upload error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Image upload failed."
+        });
     }
+}
+
 );
+
+
 
 
 /* =========================================================
