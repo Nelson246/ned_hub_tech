@@ -21,65 +21,55 @@ const bcrypt = require("bcryptjs");
 const multer = require("multer");
 
 // ==========================================
+// CLOUDINARY CONFIGURATION
+// ==========================================
+
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+function createCloudinaryStorage(folderName, prefix) {
+    return new CloudinaryStorage({
+        cloudinary,
+        params: async (req, file) => ({
+            folder: `ned-hub/${folderName}`,
+            allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
+            public_id: `${prefix}-${Date.now()}-${Math.round(Math.random() * 1E9)}`
+        })
+    });
+}
+
+const imageFileFilter = function (req, file, cb) {
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif"
+    ];
+
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error("Only JPG, PNG, WEBP and GIF images are allowed."));
+    }
+};
+
+// ==========================================
 // BANNER IMAGE UPLOAD
 // ==========================================
 
-const bannerStorage = multer.diskStorage({
-
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, "uploads"));
-    },
-
-    filename: function (req, file, cb) {
-
-        const extension =
-            path.extname(file.originalname);
-
-        const filename =
-            "banner-" +
-            Date.now() +
-            extension;
-
-        cb(null, filename);
-    }
-
-});
-
 const bannerUpload = multer({
-
-    storage: bannerStorage,
-
+    storage: createCloudinaryStorage("banners", "banner"),
     limits: {
         fileSize: 5 * 1024 * 1024
     },
-
-    fileFilter: function (req, file, cb) {
-
-        const allowedTypes = [
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-            "image/gif"
-        ];
-
-        if (allowedTypes.includes(file.mimetype)) {
-
-            cb(null, true);
-
-        } else {
-
-            cb(
-                new Error(
-                    "Only JPG, PNG, WEBP and GIF images are allowed."
-                )
-            );
-
-        }
-
-    }
-
+    fileFilter: imageFileFilter
 });
-
 
 /* =========================================
    ENVIRONMENT CHECK
@@ -1705,98 +1695,22 @@ app.post(
    NED HUB - PRODUCT MANAGEMENT
    ========================================================= */
 
-
 /* =========================================================
-   MULTER PRODUCT IMAGE UPLOAD
+   MULTER PRODUCT IMAGE UPLOAD — CLOUDINARY
    ========================================================= */
 
-const storage = multer.diskStorage({
-
-    destination: function (req, file, cb) {
-
-        cb(
-            null,
-            path.join(__dirname, "uploads")
-        );
-
-    },
-
-    filename: function (req, file, cb) {
-
-        const extension =
-            path.extname(file.originalname);
-
-        const filename =
-            "product-" +
-            Date.now() +
-            "-" +
-            Math.round(Math.random() * 1E9) +
-            extension;
-
-        cb(
-            null,
-            filename
-        );
-
-    }
-
-});
-
-
 const upload = multer({
-
-    storage: storage,
+    storage: createCloudinaryStorage("products", "product"),
 
     limits: {
-
-        fileSize:
-            5 * 1024 * 1024
-
+        fileSize: 5 * 1024 * 1024
     },
 
-    fileFilter: function (req, file, cb) {
-
-        const allowedTypes = [
-
-            "image/jpeg",
-
-            "image/png",
-
-            "image/webp",
-
-            "image/gif"
-
-        ];
-
-
-        if (
-            allowedTypes.includes(
-                file.mimetype
-            )
-        ) {
-
-            cb(
-                null,
-                true
-            );
-
-        } else {
-
-            cb(
-                new Error(
-                    "Only JPG, PNG, WEBP and GIF images are allowed."
-                )
-            );
-
-        }
-
-    }
-
+    fileFilter: imageFileFilter
 });
 
 
-
-// ==========================================
+// =========================================
 // WEBSITE SECTION IMAGE UPLOAD
 // ==========================================
 
@@ -2354,138 +2268,166 @@ app.put(
 
 /* =========================================================
    DELETE PRODUCT
-   Also removes its product_images records
+   Removes Cloudinary images and database records
    ========================================================= */
 
-app.delete(
-    "/api/products/:id",
-    async (req, res) => {
+app.delete("/api/products/:id", async (req, res) => {
+    try {
+        const id = Number(req.params.id);
 
-        try {
-
-            const id =
-                Number(req.params.id);
-
-
-            if (
-                !Number.isInteger(id) ||
-                id <= 0
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid product ID."
-
-                });
-
-            }
-
-
-            /*
-             * Check whether product exists.
-             */
-
-            const [
-                products
-            ] = await db.query(`
-
-                SELECT id
-
-                FROM products
-
-                WHERE id = ?
-
-                LIMIT 1
-
-            `, [
-
-                id
-
-            ]);
-
-
-            if (
-                products.length === 0
-            ) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "Product not found."
-
-                });
-
-            }
-
-
-            /*
-             * Remove additional image records first.
-             */
-
-            await db.query(`
-
-                DELETE FROM product_images
-
-                WHERE product_id = ?
-
-            `, [
-
-                id
-
-            ]);
-
-
-            /*
-             * Remove product.
-             */
-
-            await db.query(`
-
-                DELETE FROM products
-
-                WHERE id = ?
-
-            `, [
-
-                id
-
-            ]);
-
-
-            res.json({
-
-                success: true,
-
-                message:
-                    "Product deleted successfully."
-
-            });
-
-        } catch (error) {
-                    console.error(
-    "Delete product error:",
-    error.sqlMessage || error.message || error
-);
-           
-
-            res.status(500).json({
-
+        if (!Number.isInteger(id) || id <= 0) {
+            return res.status(400).json({
                 success: false,
-
-                message:
-                    "Failed to delete product."
-
+                message: "Invalid product ID."
             });
-
         }
 
+        // Find the product and its main image.
+        const [products] = await db.query(
+            `SELECT id, main_image
+             FROM products
+             WHERE id = ?
+             LIMIT 1`,
+            [id]
+        );
+
+        if (products.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found."
+            });
+        }
+
+        // Find all additional product images.
+        const [additionalImages] = await db.query(
+            `SELECT image_url
+             FROM product_images
+             WHERE product_id = ?`,
+            [id]
+        );
+
+        // Collect unique Cloudinary public IDs.
+        const imageUrls = [
+            products[0].main_image,
+            ...additionalImages.map(image => image.image_url)
+        ].filter(Boolean);
+
+        const publicIds = new Set();
+
+        for (const imageUrl of imageUrls) {
+            try {
+                const parsedUrl = new URL(imageUrl);
+
+                if (
+                    parsedUrl.hostname === "res.cloudinary.com"
+                ) {
+                    const parts = parsedUrl.pathname.split("/");
+                    const uploadIndex = parts.indexOf("upload");
+
+                    if (uploadIndex !== -1) {
+                        let assetParts = parts.slice(uploadIndex + 1);
+
+                        // Remove a version segment such as v1234567890.
+                        if (
+                            assetParts.length > 0 &&
+                            /^v\d+$/.test(assetParts[0])
+                        ) {
+                            assetParts = assetParts.slice(1);
+                        }
+
+                        // Remove the file extension.
+                        if (assetParts.length > 0) {
+                            assetParts[assetParts.length - 1] =
+                                assetParts[assetParts.length - 1]
+                                    .replace(/\.[^.]+$/, "");
+
+                            const publicId = assetParts.join("/");
+
+                            if (publicId) {
+                                publicIds.add(publicId);
+                            }
+                        }
+                    }
+                }
+            } catch (parseError) {
+                console.warn(
+                    "Could not parse image URL:",
+                    imageUrl
+                );
+            }
+        }
+
+        // Delete Cloudinary assets before deleting database records.
+        const cloudinaryFailures = [];
+
+        for (const publicId of publicIds) {
+            try {
+                const result = await cloudinary.uploader.destroy(
+                    publicId,
+                    { resource_type: "image" }
+                );
+
+                if (
+                    result.result !== "ok" &&
+                    result.result !== "not found"
+                ) {
+                    cloudinaryFailures.push(publicId);
+                }
+            } catch (cloudinaryError) {
+                console.error(
+                    "Cloudinary deletion failed:",
+                    publicId,
+                    cloudinaryError.message
+                );
+
+                cloudinaryFailures.push(publicId);
+            }
+        }
+
+        // Do not delete the database records if Cloudinary deletion failed.
+        if (cloudinaryFailures.length > 0) {
+            return res.status(502).json({
+                success: false,
+                message:
+                    "Some images could not be deleted from Cloudinary. " +
+                    "The product has been kept. Please try again.",
+                failedImages: cloudinaryFailures
+            });
+        }
+
+        // Delete additional image records.
+        await db.query(
+            `DELETE FROM product_images
+             WHERE product_id = ?`,
+            [id]
+        );
+
+        // Delete the product record.
+        await db.query(
+            `DELETE FROM products
+             WHERE id = ?`,
+            [id]
+        );
+
+        return res.json({
+            success: true,
+            message:
+                "Product and its Cloudinary images deleted successfully."
+        });
+
+    } catch (error) {
+        console.error(
+            "Delete product error:",
+            error.sqlMessage || error.message || error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete product."
+        });
     }
-);
+});
+
 
 
 /* =========================================================
@@ -2804,23 +2746,17 @@ app.post(
     }
 );
 
-
 /* =========================================================
    DELETE ONE PRODUCT IMAGE
+   Deletes Cloudinary image and database record safely
    ========================================================= */
 
 app.delete(
     "/api/products/:productId/images/:imageId",
     async (req, res) => {
-
         try {
-
-            const productId =
-                Number(req.params.productId);
-
-            const imageId =
-                Number(req.params.imageId);
-
+            const productId = Number(req.params.productId);
+            const imageId = Number(req.params.imageId);
 
             if (
                 !Number.isInteger(productId) ||
@@ -2828,195 +2764,208 @@ app.delete(
                 !Number.isInteger(imageId) ||
                 imageId <= 0
             ) {
-
                 return res.status(400).json({
-
                     success: false,
-
-                    message:
-                        "Invalid product or image ID."
-
+                    message: "Invalid product or image ID."
                 });
-
             }
 
+            // Find the requested image.
+            const [images] = await db.query(
+                `SELECT id, image_url
+                 FROM product_images
+                 WHERE id = ? AND product_id = ?
+                 LIMIT 1`,
+                [imageId, productId]
+            );
 
-            /*
-             * Find the image first.
-             */
-
-            const [
-                images
-            ] = await db.query(`
-
-                SELECT
-
-                    id,
-
-                    image_url
-
-                FROM product_images
-
-                WHERE id = ?
-
-                AND product_id = ?
-
-                LIMIT 1
-
-            `, [
-
-                imageId,
-
-                productId
-
-            ]);
-
-
-            if (
-                images.length === 0
-            ) {
-
+            if (images.length === 0) {
                 return res.status(404).json({
-
                     success: false,
-
-                    message:
-                        "Product image not found."
-
+                    message: "Product image not found."
                 });
-
             }
 
+            const imageUrl = images[0].image_url;
+
+            // Find the product's current main image.
+            const [products] = await db.query(
+                `SELECT main_image
+                 FROM products
+                 WHERE id = ?
+                 LIMIT 1`,
+                [productId]
+            );
+
+            if (products.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Product not found."
+                });
+            }
+
+            const isMainImage =
+                products[0].main_image === imageUrl;
 
             /*
-             * Delete image record.
+             * Delete the Cloudinary asset only if the URL
+             * belongs to Cloudinary.
              */
-
-            await db.query(`
-
-                DELETE FROM product_images
-
-                WHERE id = ?
-
-                AND product_id = ?
-
-            `, [
-
-                imageId,
-
-                productId
-
-            ]);
-
-
-            /*
-             * If deleted image was the
-             * main image, choose another
-             * available image automatically.
-             */
-
-            const [
-                product
-            ] = await db.query(`
-
-                SELECT
-                    main_image
-
-                FROM products
-
-                WHERE id = ?
-
-                LIMIT 1
-
-            `, [
-
-                productId
-
-            ]);
-
-
             if (
-                product.length > 0 &&
-                product[0].main_image ===
-                    images[0].image_url
+                typeof imageUrl === "string" &&
+                imageUrl.includes("res.cloudinary.com")
             ) {
+                let publicId;
 
-                const [
-                    remainingImages
-                ] = await db.query(`
+                try {
+                    const parsedUrl = new URL(imageUrl);
+                    const segments = parsedUrl.pathname.split("/");
+                    const uploadIndex = segments.indexOf("upload");
 
-                    SELECT
-                        image_url
+                    if (
+                        parsedUrl.hostname !== "res.cloudinary.com" ||
+                        uploadIndex === -1
+                    ) {
+                        return res.status(400).json({
+                            success: false,
+                            message:
+                                "Unable to identify the Cloudinary image."
+                        });
+                    }
 
-                    FROM product_images
+                    let assetSegments =
+                        segments.slice(uploadIndex + 1);
 
-                    WHERE product_id = ?
+                    // Remove the Cloudinary version, if present.
+                    if (
+                        assetSegments.length > 0 &&
+                        /^v\d+$/.test(assetSegments[0])
+                    ) {
+                        assetSegments = assetSegments.slice(1);
+                    }
 
-                    ORDER BY id ASC
+                    if (assetSegments.length === 0) {
+                        throw new Error(
+                            "Cloudinary public ID not found."
+                        );
+                    }
 
-                    LIMIT 1
+                    // Remove the image extension.
+                    const lastIndex = assetSegments.length - 1;
 
-                `, [
+                    assetSegments[lastIndex] =
+                        assetSegments[lastIndex].replace(/\.[^.]+$/, "");
 
-                    productId
+                    publicId = assetSegments.join("/");
 
-                ]);
+                    if (!publicId) {
+                        throw new Error(
+                            "Cloudinary public ID is empty."
+                        );
+                    }
+                } catch (parseError) {
+                    console.error(
+                        "Cloudinary URL parsing error:",
+                        parseError.message
+                    );
 
+                    return res.status(500).json({
+                        success: false,
+                        message:
+                            "Could not identify the image in Cloudinary."
+                    });
+                }
+
+                // Delete the actual Cloudinary image.
+                try {
+                    const result =
+                        await cloudinary.uploader.destroy(
+                            publicId,
+                            { resource_type: "image" }
+                        );
+
+                    if (
+                        result.result !== "ok" &&
+                        result.result !== "not found"
+                    ) {
+                        return res.status(502).json({
+                            success: false,
+                            message:
+                                "Cloudinary could not delete the image. " +
+                                "The database record was preserved."
+                        });
+                    }
+                } catch (cloudinaryError) {
+                    console.error(
+                        "Cloudinary image deletion failed:",
+                        cloudinaryError.message
+                    );
+
+                    return res.status(502).json({
+                        success: false,
+                        message:
+                            "Could not delete the image from Cloudinary. " +
+                            "Please try again."
+                    });
+                }
+            }
+
+            /*
+             * Remove the image record from MySQL.
+             */
+            await db.query(
+                `DELETE FROM product_images
+                 WHERE id = ? AND product_id = ?`,
+                [imageId, productId]
+            );
+
+            /*
+             * If this was the main image, select a replacement.
+             */
+            if (isMainImage) {
+                const [remainingImages] = await db.query(
+                    `SELECT image_url
+                     FROM product_images
+                     WHERE product_id = ?
+                     ORDER BY id ASC
+                     LIMIT 1`,
+                    [productId]
+                );
 
                 const newMainImage =
                     remainingImages.length > 0
                         ? remainingImages[0].image_url
                         : null;
 
-
-                await db.query(`
-
-                    UPDATE products
-
-                    SET main_image = ?
-
-                    WHERE id = ?
-
-                `, [
-
-                    newMainImage,
-
-                    productId
-
-                ]);
-
+                await db.query(
+                    `UPDATE products
+                     SET main_image = ?
+                     WHERE id = ?`,
+                    [newMainImage, productId]
+                );
             }
 
-
-            res.json({
-
+            return res.json({
                 success: true,
-
                 message:
                     "Product image deleted successfully."
-
             });
 
         } catch (error) {
-
             console.error(
                 "Delete product image error:",
-                error
+                error.sqlMessage || error.message || error
             );
 
-            res.status(500).json({
-
+            return res.status(500).json({
                 success: false,
-
-                message:
-                    "Failed to delete product image."
-
+                message: "Failed to delete product image."
             });
-
         }
-
     }
 );
+
+
 
 
 /* =========================================================
