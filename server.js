@@ -1,4 +1,4 @@
-const path = require("path");
+﻿const path = require("path");
 
 /* =========================================
    LOAD ENVIRONMENT VARIABLES
@@ -108,7 +108,7 @@ console.log("---------------------------------");
 
 const app = express();
 
-console.log("🔥 THIS IS THE NED HUB SERVER.JS FILE");
+console.log("ðŸ”¥ THIS IS THE NED HUB SERVER.JS FILE");
 
 const PORT = 3000;
 
@@ -229,9 +229,9 @@ createCustomerCareTable();
 
 const { Resend } = require("resend");
 
-const resend = new Resend(
-    process.env.RESEND_API_KEY
-);
+const resend = process.env.RESEND_API_KEY
+? new Resend(process.env.RESEND_API_KEY)
+: null;
 
 
 /* =========================================
@@ -1154,7 +1154,7 @@ app.post("/api/forgot-password", async (req, res) => {
                     <hr>
 
                     <p style="color:#777;font-size:13px;">
-                        NED HUB — Your trusted online shop.
+                        NED HUB â€” Your trusted online shop.
                     </p>
 
                 </div>
@@ -1696,7 +1696,7 @@ app.post(
    ========================================================= */
 
 /* =========================================================
-   MULTER PRODUCT IMAGE UPLOAD — CLOUDINARY
+   MULTER PRODUCT IMAGE UPLOAD â€” CLOUDINARY
    ========================================================= */
 
 const upload = multer({
@@ -6554,7 +6554,7 @@ app.get("/api/admin/me", (req, res) => {
 
 
 
-console.log("🔥 ADMIN DASHBOARD ROUTE REGISTERING");
+console.log("ðŸ”¥ ADMIN DASHBOARD ROUTE REGISTERING");
 
 
 
@@ -7370,7 +7370,7 @@ app.post(
             }
 
             const imagePath =
-                "/uploads/" + req.file.filename;
+                req.file.path;
 
             res.json({
                 success: true,
@@ -8913,3 +8913,4 @@ app.listen(
 
     }
 );
+
