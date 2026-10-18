@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -543,7 +543,7 @@
                     >
 
                     <div class="upload-help">
-                        JPG, PNG, WEBP or GIF — maximum 5MB
+                        JPG, PNG, WEBP or GIF â€” maximum 5MB
                     </div>
 
                     <div
@@ -957,12 +957,27 @@ bannerImageInput.addEventListener(
             }
 
 
-            currentImagePath =
-                data.image;
+            currentImagePath = data.image;
+
+            if (!currentImagePath) {
+                throw new Error("The server did not return an image URL.");
+            }
+
+            imagePreview.onload = function () {
+                previewContainer.style.display = "block";
+            };
+
+            imagePreview.onerror = function () {
+                uploadStatus.textContent = "Upload succeeded, but the preview image could not load.";
+                uploadStatus.style.color = "#dc2626";
+            };
+
+            imagePreview.src = currentImagePath;
+            previewContainer.style.display = "block";
 
 
             uploadStatus.textContent =
-                "✓ Image uploaded successfully";
+                "âœ“ Image uploaded successfully";
 
 
             uploadStatus.style.color =
