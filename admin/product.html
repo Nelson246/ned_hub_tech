@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NED HUB - Products</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+<div class="admin-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-store"></i>
+            </div>
+
+            <div>
+                <h2>NED HUB</h2>
+                <span>ADMIN PANEL</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-title">MAIN</p>
+
+            <a href="index.html" class="nav-link">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <p class="nav-title">SHOP MANAGEMENT</p>
+
+            <a href="products.html" class="nav-link active">
+                <i class="fa-solid fa-box"></i>
+                <span>Products</span>
+            </a>
+
+            <a href="categories.html" class="nav-link">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Categories</span>
+            </a>
+
+            <a href="orders.html" class="nav-link">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Orders</span>
+            </a>
+
+            <a href="customers.html" class="nav-link">
+                <i class="fa-solid fa-users"></i>
+                <span>Customers</span>
+            </a>
+
+            <a href="payments.html" class="nav-link">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>Payments</span>
+            </a>
+
+            <p class="nav-title">WEBSITE</p>
+
+            <a href="website.html" class="nav-link">
+                <i class="fa-solid fa-globe"></i>
+                <span>Website Editor</span>
+            </a>
+
+            <p class="nav-title">SYSTEM</p>
+
+            <a href="settings.html" class="nav-link">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="#" class="nav-link logout-link">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+        </nav>
+
+        <div class="admin-profile">
+
+            <div class="profile-avatar">
+                A
+            </div>
+
+            <div class="profile-info">
+                <strong>Administrator</strong>
+                <span>Super Admin</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="menu-button"
+                    id="menuButton"
+                    type="button"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h1>Products</h1>
+                    <p>Manage your NED HUB products</p>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="admin-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="productSearch"
+                        placeholder="Search products..."
+                    >
+
+                </div>
+
+                <button class="icon-button" type="button">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                </button>
+
+                <div class="top-admin">
+
+                    <div class="top-avatar">
+                        A
+                    </div>
+
+                    <div>
+                        <strong>Administrator</strong>
+                        <span>Admin</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <section class="dashboard-content">
+
+
+            <!-- PAGE HEADER -->
+            <div class="products-page-header">
+
+                <div>
+
+                    <h2>All Products</h2>
+
+                    <p>
+                        Add, edit, delete and manage your products.
+                    </p>
+
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="addProductButton"
+                    type="button"
+                >
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Product
+
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT FILTERS -->
+            <div class="dashboard-card product-filter-card">
+
+                <div class="product-filters">
+
+                    <div class="filter-search">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="tableSearch"
+                            placeholder="Search product name or SKU..."
+                        >
+
+                    </div>
+
+
+                    <select id="categoryFilter">
+
+                        <option value="">All Categories</option>
+
+                        <option value="Audio">
+                            Audio
+                        </option>
+
+                        <option value="Guitars">
+                            Guitars
+                        </option>
+
+                        <option value="Microphones">
+                            Microphones
+                        </option>
+
+                        <option value="Accessories">
+                            Accessories
+                        </option>
+
+                    </select>
+
+
+                    <select id="stockFilter">
+
+                        <option value="">
+                            All Stock
+                        </option>
+
+                        <option value="in-stock">
+                            In Stock
+                        </option>
+
+                        <option value="low-stock">
+                            Low Stock
+                        </option>
+
+                        <option value="out-of-stock">
+                            Out of Stock
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCTS TABLE -->
+            <div class="dashboard-card products-table-card">
+
+                <div class="table-container">
+
+                    <table class="products-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    SKU
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Stock
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="productsTableBody">
+
+
+                            <!-- PRODUCT 1 -->
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="product-table-info">
+
+                                        <div class="product-image-box">
+
+                                            <i class="fa-solid fa-headphones"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                Wireless Headphones
+                                            </strong>
+
+                                            <span>
+                                                Premium Bluetooth headphones
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    WH-001
+                                </td>
+
+                                <td>
+                                    Audio
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        GH₵ 450.00
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    25
+                                </td>
+
+                                <td>
+
+                                    <span class="product-status active">
+                                        Active
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="action-buttons">
+
+                                        <button
+                                            class="table-action edit"
+                                            title="Edit Product"
+                                            type="button"
+                                        >
+
+                                            <i class="fa-solid fa-pen"></i>
+
+                                        </button>
+
+                                        <button
+                                            class="table-action image"
+                                            title="Change Image"
+                                            type="button"
+                                        >
+
+                                            <i class="fa-solid fa-image"></i>
+
+                                        </button>
+
+                                        <button
+                                            class="table-action delete"
+                                            title="Delete Product"
+                                            type="button"
+                                        >
+
+                                            <i class="fa-solid fa-trash"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- PRODUCT 2 -->
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="product-table-info">
+
+                                        <div class="product-image-box">
+
+                                            <i class="fa-solid fa-microphone"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                Studio Microphone
+                                            </strong>
+
+                                            <span>
+                                                Professional recording mic
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    MIC-002
+                                </td>
+
+                                <td>
+                                    Microphones
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        GH₵ 850.00
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="stock-low">
+                                        5
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <span class="product-status active">
+                                        Active
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="action-buttons">
+
+                                        <button
+                                            class="table-action edit"
+                                            title="Edit Product"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+
+                                        <button
+                                            class="table-action image"
+                                            title="Change Image"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-image"></i>
+                                        </button>
+
+                                        <button
+                                            class="table-action delete"
+                                            title="Delete Product"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- PRODUCT 3 -->
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="product-table-info">
+
+                                        <div class="product-image-box">
+
+                                            <i class="fa-solid fa-volume-high"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                Bluetooth Speaker
+                                            </strong>
+
+                                            <span>
+                                                Portable wireless speaker
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    SPK-003
+                                </td>
+
+                                <td>
+                                    Audio
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        GH₵ 650.00
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="stock-low">
+                                        7
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <span class="product-status active">
+                                        Active
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="action-buttons">
+
+                                        <button
+                                            class="table-action edit"
+                                            title="Edit Product"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+
+                                        <button
+                                            class="table-action image"
+                                            title="Change Image"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-image"></i>
+                                        </button>
+
+                                        <button
+                                            class="table-action delete"
+                                            title="Delete Product"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- PRODUCT 4 -->
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="product-table-info">
+
+                                        <div class="product-image-box">
+
+                                            <i class="fa-solid fa-guitar"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                Guitar Strings
+                                            </strong>
+
+                                            <span>
+                                                Premium guitar strings
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+                                    GST-004
+                                </td>
+
+                                <td>
+                                    Accessories
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        GH₵ 120.00
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="stock-low">
+                                        2
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <span class="product-status active">
+                                        Active
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="action-buttons">
+
+                                        <button
+                                            class="table-action edit"
+                                            title="Edit Product"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+
+                                        <button
+                                            class="table-action image"
+                                            title="Change Image"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-image"></i>
+                                        </button>
+
+                                        <button
+                                            class="table-action delete"
+                                            title="Delete Product"
+                                            type="button"
+                                        >
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- TABLE FOOTER -->
+
+                <div class="products-table-footer">
+
+                    <span>
+                        Showing 4 of 156 products
+                    </span>
+
+                    <div class="pagination">
+
+                        <button type="button">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="page-active"
+                        >
+                            1
+                        </button>
+
+                        <button type="button">
+                            2
+                        </button>
+
+                        <button type="button">
+                            3
+                        </button>
+
+                        <span>...</span>
+
+                        <button type="button">
+                            16
+                        </button>
+
+                        <button type="button">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="admin-footer">
+
+            <p>
+                © 2026 NED HUB Admin Panel. All rights reserved.
+            </p>
+
+            <span>
+                Admin Dashboard v1.0
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     ADD / EDIT PRODUCT MODAL
+====================================================== -->
+
+<div
+    class="product-modal"
+    id="productModal"
+>
+
+    <div class="product-modal-content">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Add Product
+                </h2>
+
+                <p>
+                    Enter your product information below.
+                </p>
+
+            </div>
+
+            <button
+                class="modal-close"
+                id="closeModal"
+                type="button"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <form id="productForm">
+
+
+            <!-- PRODUCT IMAGE -->
+
+            <div class="image-upload-section">
+
+                <div
+                    class="product-preview"
+                    id="productPreview"
+                >
+
+                    <i class="fa-solid fa-image"></i>
+
+                    <span>
+                        Product Image
+                    </span>
+
+                </div>
+
+                <div class="image-upload-controls">
+
+                    <label
+                        for="productImage"
+                        class="upload-button"
+                    >
+
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                        Choose Image
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="productImage"
+                        accept="image/*"
+                        hidden
+                    >
+
+                    <small>
+                        JPG, PNG or WEBP. Recommended 800×800px.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCT NAME -->
+
+            <div class="form-group">
+
+                <label for="productName">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="Enter product name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PRICE + STOCK -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="productPrice">
+                        Price (GH₵)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        placeholder="0.00"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="productStock">
+                        Stock Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productStock"
+                        placeholder="0"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY + SKU -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="productCategory">
+                        Category
+                    </label>
+
+                    <select id="productCategory">
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option>
+                            Audio
+                        </option>
+
+                        <option>
+                            Guitars
+                        </option>
+
+                        <option>
+                            Microphones
+                        </option>
+
+                        <option>
+                            Accessories
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="productSKU">
+                        SKU
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productSKU"
+                        placeholder="Example: NED-001"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+                <label for="productDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="productDescription"
+                    rows="5"
+                    placeholder="Describe your product..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="productStatus">
+                        Status
+                    </label>
+
+                    <select id="productStatus">
+
+                        <option value="active">
+                            Active
+                        </option>
+
+                        <option value="inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group featured-option">
+
+                    <label>
+                        Featured Product
+                    </label>
+
+                    <label class="checkbox-label">
+
+                        <input
+                            type="checkbox"
+                            id="featuredProduct"
+                        >
+
+                        <span>
+                            Show this product as featured
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM BUTTONS -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancelProduct"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Save Product
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="js/admin.js"></script>
+
+</body>
+</html>

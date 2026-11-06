@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NED HUB - Banner Manager</title>
+
+    <link rel="stylesheet" href="/admin/css/admin.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #111827;
+            color: white;
+            padding: 25px 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            margin-left: 240px;
+            width: calc(100% - 240px);
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .topbar h1 {
+            margin: 0 0 5px;
+            font-size: 28px;
+        }
+
+        .topbar p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+        #message {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 13px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .message.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .banner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .banner-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .banner-image {
+            width: 100%;
+            height: 190px;
+            display: block;
+            object-fit: cover;
+            background: #e5e7eb;
+        }
+
+        .banner-content {
+            padding: 18px;
+        }
+
+        .banner-content h3 {
+            margin: 8px 0;
+        }
+
+        .banner-content p {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 42px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .banner-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .banner-actions button {
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .toggle-btn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .empty {
+            background: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-radius: 12px;
+            color: #6b7280;
+        }
+
+        /* MODAL */
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close-btn {
+            border: none;
+            background: transparent;
+            color: #6b7280;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .checkbox-row {
+            display: flex !important;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal !important;
+        }
+
+        .checkbox-row input {
+            width: auto;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* IMAGE UPLOAD */
+
+        .upload-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        .upload-box:hover {
+            border-color: #2563eb;
+        }
+
+        .upload-box input[type="file"] {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .upload-help {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .upload-status {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .preview-container {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .preview-container img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .image-path {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6b7280;
+            word-break: break-all;
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .add-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+<aside
+    class="sidebar"
+    id="adminSidebar"
+></aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Banner Manager
+                </h1>
+
+                <p>
+                    Manage homepage banners
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="add-btn"
+                id="addBannerBtn"
+            >
+                + Add Banner
+            </button>
+
+        </div>
+
+
+        <div id="message"></div>
+
+
+        <div id="bannerContainer">
+
+            <div class="empty">
+                Loading banners...
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div
+    class="modal"
+    id="bannerModal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Add Banner
+            </h2>
+
+            <button
+                type="button"
+                class="close-btn"
+                id="closeModalBtn"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <form id="bannerForm">
+
+            <input
+                type="hidden"
+                id="bannerId"
+            >
+
+
+            <div class="form-group">
+
+                <label for="title">
+                    Banner Title
+                </label>
+
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="Welcome to NED HUB"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Enter banner description"
+                ></textarea>
+
+            </div>
+
+
+            <!-- IMAGE UPLOAD -->
+
+            <div class="form-group">
+
+                <label>
+                    Banner Image
+                </label>
+
+                <div class="upload-box">
+
+                    <strong>
+                        Choose an image from your computer
+                    </strong>
+
+                    <input
+                        type="file"
+                        id="bannerImage"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                    >
+
+                    <div class="upload-help">
+                        JPG, PNG, WEBP or GIF — maximum 5MB
+                    </div>
+
+                    <div
+                        id="uploadStatus"
+                        class="upload-status"
+                    ></div>
+
+                    <div
+                        id="previewContainer"
+                        class="preview-container"
+                    >
+
+                        <img
+                            id="imagePreview"
+                            src=""
+                            alt="Banner Preview"
+                        >
+
+                        <div
+                            id="imagePath"
+                            class="image-path"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="buttonText">
+                        Button Text
+                    </label>
+
+                    <input
+                        type="text"
+                        id="buttonText"
+                        placeholder="Shop Now"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="buttonLink">
+                        Button Link
+                    </label>
+
+                    <input
+                        type="text"
+                        id="buttonLink"
+                        placeholder="/"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="startDate">
+                        Start Date
+                    </label>
+
+                    <input
+                        type="datetime-local"
+                        id="startDate"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="endDate">
+                        End Date
+                    </label>
+
+                    <input
+                        type="datetime-local"
+                        id="endDate"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="checkbox-row">
+
+                    <input
+                        type="checkbox"
+                        id="isActive"
+                        checked
+                    >
+
+                    Active Banner
+
+                </label>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="save-btn"
+                id="saveBannerBtn"
+            >
+                Save Banner
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+let banners = [];
+
+let currentImagePath = "";
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const modal =
+    document.getElementById("bannerModal");
+
+const addBannerBtn =
+    document.getElementById("addBannerBtn");
+
+const closeModalBtn =
+    document.getElementById("closeModalBtn");
+
+const bannerForm =
+    document.getElementById("bannerForm");
+
+const bannerContainer =
+    document.getElementById("bannerContainer");
+
+const messageBox =
+    document.getElementById("message");
+
+const bannerImageInput =
+    document.getElementById("bannerImage");
+
+const uploadStatus =
+    document.getElementById("uploadStatus");
+
+const previewContainer =
+    document.getElementById("previewContainer");
+
+const imagePreview =
+    document.getElementById("imagePreview");
+
+const imagePath =
+    document.getElementById("imagePath");
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(text, type = "success") {
+
+    messageBox.innerHTML = `
+        <div class="message ${type}">
+            ${escapeHtml(text)}
+        </div>
+    `;
+
+    setTimeout(function () {
+
+        messageBox.innerHTML = "";
+
+    }, 4000);
+}
+
+
+/* =========================================
+   OPEN ADD MODAL
+========================================= */
+
+function openAddModal() {
+
+    document.getElementById("modalTitle").textContent =
+        "Add Banner";
+
+    document.getElementById("bannerId").value =
+        "";
+
+    document.getElementById("title").value =
+        "";
+
+    document.getElementById("description").value =
+        "";
+
+    document.getElementById("buttonText").value =
+        "";
+
+    document.getElementById("buttonLink").value =
+        "";
+
+    document.getElementById("startDate").value =
+        "";
+
+    document.getElementById("endDate").value =
+        "";
+
+    document.getElementById("isActive").checked =
+        true;
+
+    bannerImageInput.value = "";
+
+    currentImagePath = "";
+
+    uploadStatus.textContent = "";
+
+    previewContainer.style.display =
+        "none";
+
+    imagePreview.src = "";
+
+    imagePath.textContent = "";
+
+    modal.classList.add("show");
+}
+
+
+/* =========================================
+   CLOSE MODAL
+========================================= */
+
+function closeModal() {
+
+    modal.classList.remove("show");
+
+}
+
+
+/* =========================================
+   ADD BUTTON
+========================================= */
+
+addBannerBtn.addEventListener(
+    "click",
+    openAddModal
+);
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+closeModalBtn.addEventListener(
+    "click",
+    closeModal
+);
+
+
+/* =========================================
+   OUTSIDE CLICK
+========================================= */
+
+modal.addEventListener(
+    "click",
+    function (event) {
+
+        if (event.target === modal) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   IMAGE FILE SELECTED
+========================================= */
+
+bannerImageInput.addEventListener(
+    "change",
+    async function () {
+
+        const file =
+            this.files[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        if (file.size > 5 * 1024 * 1024) {
+
+            showMessage(
+                "Image must be 5MB or smaller.",
+                "error"
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/gif"
+        ];
+
+
+        if (!allowedTypes.includes(file.type)) {
+
+            showMessage(
+                "Only JPG, PNG, WEBP and GIF images are allowed.",
+                "error"
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+
+        /* LOCAL PREVIEW */
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function (event) {
+
+                imagePreview.src =
+                    event.target.result;
+
+                previewContainer.style.display =
+                    "block";
+
+            };
+
+
+        reader.readAsDataURL(file);
+
+
+        /* UPLOAD */
+
+        uploadStatus.textContent =
+            "Uploading image...";
+
+
+        uploadStatus.style.color =
+            "#2563eb";
+
+
+        try {
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "bannerImage",
+                file
+            );
+
+
+            const response =
+                await fetch(
+                    "/api/admin/banners/upload",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.message ||
+                    "Image upload failed."
+                );
+
+            }
+
+
+            currentImagePath =
+                data.image;
+
+
+            uploadStatus.textContent =
+                "✓ Image uploaded successfully";
+
+
+            uploadStatus.style.color =
+                "#16a34a";
+
+
+            imagePath.textContent =
+                currentImagePath;
+
+
+        } catch (error) {
+
+            console.error(
+                "Image upload error:",
+                error
+            );
+
+
+            uploadStatus.textContent =
+                "Upload failed";
+
+
+            uploadStatus.style.color =
+                "#dc2626";
+
+
+            showMessage(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LOAD BANNERS
+========================================= */
+
+async function loadBanners() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/banners"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Failed to load banners."
+            );
+
+        }
+
+
+        banners =
+            data.banners || [];
+
+
+        renderBanners();
+
+    } catch (error) {
+
+        console.error(
+            "Load banners error:",
+            error
+        );
+
+
+        bannerContainer.innerHTML = `
+            <div class="empty">
+
+                <h3>
+                    Unable to load banners
+                </h3>
+
+                <p>
+                    ${escapeHtml(error.message)}
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   RENDER BANNERS
+========================================= */
+
+function renderBanners() {
+
+    if (banners.length === 0) {
+
+        bannerContainer.innerHTML = `
+            <div class="empty">
+
+                <h3>
+                    No banners yet
+                </h3>
+
+                <p>
+                    Click "Add Banner" to create
+                    your first homepage banner.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    bannerContainer.innerHTML = `
+
+        <div class="banner-grid">
+
+            ${banners.map(function (banner) {
+
+                const active =
+                    Number(banner.is_active) === 1;
+
+
+                return `
+
+                    <div class="banner-card">
+
+                        <img
+                            class="banner-image"
+                            src="${escapeHtml(banner.image)}"
+                            alt="${escapeHtml(
+                                banner.title ||
+                                "Banner"
+                            )}"
+                            onerror="this.src='https://via.placeholder.com/800x400?text=NED+HUB+Banner'"
+                        >
+
+                        <div class="banner-content">
+
+                            <span class="status ${active ? "active" : "inactive"}">
+
+                                ${active
+                                    ? "ACTIVE"
+                                    : "INACTIVE"}
+
+                            </span>
+
+
+                            <h3>
+
+                                ${escapeHtml(
+                                    banner.title ||
+                                    "Untitled Banner"
+                                )}
+
+                            </h3>
+
+
+                            <p>
+
+                                ${escapeHtml(
+                                    banner.description ||
+                                    "No description"
+                                )}
+
+                            </p>
+
+
+                            <div class="banner-actions">
+
+                                <button
+                                    type="button"
+                                    class="edit-btn"
+                                    onclick="editBanner(${banner.id})"
+                                >
+                                    Edit
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="toggle-btn"
+                                    onclick="toggleBanner(${banner.id})"
+                                >
+                                    ${active
+                                        ? "Deactivate"
+                                        : "Activate"}
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="delete-btn"
+                                    onclick="deleteBanner(${banner.id})"
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("")}
+
+        </div>
+
+    `;
+}
+
+
+/* =========================================
+   EDIT BANNER
+========================================= */
+
+function editBanner(id) {
+
+    const banner =
+        banners.find(function (item) {
+
+            return Number(item.id) === Number(id);
+
+        });
+
+
+    if (!banner) {
+
+        showMessage(
+            "Banner not found.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    document.getElementById("modalTitle").textContent =
+        "Edit Banner";
+
+
+    document.getElementById("bannerId").value =
+        banner.id;
+
+
+    document.getElementById("title").value =
+        banner.title || "";
+
+
+    document.getElementById("description").value =
+        banner.description || "";
+
+
+    document.getElementById("buttonText").value =
+        banner.button_text || "";
+
+
+    document.getElementById("buttonLink").value =
+        banner.button_link || "";
+
+
+    document.getElementById("isActive").checked =
+        Number(banner.is_active) === 1;
+
+
+    currentImagePath =
+        banner.image || "";
+
+
+    if (currentImagePath) {
+
+        imagePreview.src =
+            currentImagePath;
+
+        imagePath.textContent =
+            currentImagePath;
+
+        previewContainer.style.display =
+            "block";
+
+        uploadStatus.textContent =
+            "Current banner image";
+
+        uploadStatus.style.color =
+            "#6b7280";
+
+    } else {
+
+        previewContainer.style.display =
+            "none";
+
+        uploadStatus.textContent =
+            "";
+
+    }
+
+
+    bannerImageInput.value =
+        "";
+
+
+    modal.classList.add("show");
+}
+
+
+/* =========================================
+   SAVE BANNER
+========================================= */
+
+bannerForm.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+
+        if (!currentImagePath) {
+
+            showMessage(
+                "Please select and upload a banner image first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const id =
+            document.getElementById("bannerId").value;
+
+
+        const bannerData = {
+
+            title:
+                document
+                    .getElementById("title")
+                    .value
+                    .trim(),
+
+            description:
+                document
+                    .getElementById("description")
+                    .value
+                    .trim(),
+
+            image:
+                currentImagePath,
+
+            button_text:
+                document
+                    .getElementById("buttonText")
+                    .value
+                    .trim(),
+
+            button_link:
+                document
+                    .getElementById("buttonLink")
+                    .value
+                    .trim(),
+
+            start_date:
+                document
+                    .getElementById("startDate")
+                    .value ||
+                null,
+
+            end_date:
+                document
+                    .getElementById("endDate")
+                    .value ||
+                null,
+
+            is_active:
+                document
+                    .getElementById("isActive")
+                    .checked
+
+        };
+
+
+        const saveButton =
+            document.getElementById(
+                "saveBannerBtn"
+            );
+
+
+        saveButton.disabled =
+            true;
+
+
+        saveButton.textContent =
+            "Saving...";
+
+
+        try {
+
+            const url =
+                id
+                    ? `/api/admin/banners/${id}`
+                    : "/api/admin/banners";
+
+
+            const method =
+                id
+                    ? "PUT"
+                    : "POST";
+
+
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method: method,
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                bannerData
+                            )
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.message ||
+                    "Failed to save banner."
+                );
+
+            }
+
+
+            closeModal();
+
+
+            showMessage(
+                data.message ||
+                "Banner saved successfully."
+            );
+
+
+            await loadBanners();
+
+        } catch (error) {
+
+            console.error(
+                "Save banner error:",
+                error
+            );
+
+
+            showMessage(
+                error.message,
+                "error"
+            );
+
+        } finally {
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save Banner";
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   TOGGLE
+========================================= */
+
+async function toggleBanner(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/admin/banners/${id}/toggle`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Failed to update banner."
+            );
+
+        }
+
+
+        showMessage(
+            "Banner status updated."
+        );
+
+
+        await loadBanners();
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DELETE
+========================================= */
+
+async function deleteBanner(id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this banner?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/admin/banners/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Failed to delete banner."
+            );
+
+        }
+
+
+        showMessage(
+            "Banner deleted successfully."
+        );
+
+
+        await loadBanners();
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+loadBanners();
+
+</script>
+
+<script src="/admin/js/admin-sidebar.js"></script>
+
+
+</body>
+</html>
