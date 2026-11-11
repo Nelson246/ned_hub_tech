@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ned-hub-tech.onrender.com/sitemap.xml
